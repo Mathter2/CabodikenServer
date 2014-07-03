@@ -51,6 +51,10 @@ Namespace Domain
 
         End Function
 
+        Public Sub RegisterUser(userName As String, Host As Integer, password As String)
+
+        End Sub
+
         Private Function GenerateSessionTokenId() As String
 
         End Function
