@@ -1,0 +1,9 @@
+c:\users\mathter\documents\visual studio 2013\Projects\Cabodiken Server\Cabodiken Server\bin\Cabodiken Server.dll.config
+c:\users\mathter\documents\visual studio 2013\Projects\Cabodiken Server\Cabodiken Server\bin\Cabodiken Server.dll
+c:\users\mathter\documents\visual studio 2013\Projects\Cabodiken Server\Cabodiken Server\bin\Cabodiken Server.pdb
+c:\users\mathter\documents\visual studio 2013\Projects\Cabodiken Server\Cabodiken Server\bin\Cabodiken Server.xml
+c:\users\mathter\documents\visual studio 2013\Projects\Cabodiken Server\Cabodiken Server\obj\Debug\Cabodiken_Server.Resources.resources
+c:\users\mathter\documents\visual studio 2013\Projects\Cabodiken Server\Cabodiken Server\obj\Debug\Cabodiken Server.vbproj.GenerateResource.Cache
+c:\users\mathter\documents\visual studio 2013\Projects\Cabodiken Server\Cabodiken Server\obj\Debug\Cabodiken Server.dll
+c:\users\mathter\documents\visual studio 2013\Projects\Cabodiken Server\Cabodiken Server\obj\Debug\Cabodiken Server.xml
+c:\users\mathter\documents\visual studio 2013\Projects\Cabodiken Server\Cabodiken Server\obj\Debug\Cabodiken Server.pdb
