@@ -47,7 +47,7 @@ Namespace Domain
 
         End Function
 
-        Public Function LogIn(username As String, password As String) As String
+        Public Function LogIn(username As String, host As Host, password As String) As String
 
         End Function
 

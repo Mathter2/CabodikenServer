@@ -24,13 +24,14 @@ Namespace WebServices
         Public Function UserAuthenticateV01(userName As String, host As Integer, password As String) As String _
             Implements IWebServiceAuthentication.UserAuthenticateV01
 
+            Return UserManager.Instance.LogIn(userName, host, password)
+
         End Function
 
         Public Function RegisterUserV01(userName As String, host As Integer, password As String) As String _
             Implements IWebServiceAuthentication.RegisterUserV01
 
-            UserManager.Instance.
-
+            UserManager.Instance.RegisterUser(userName, host, password)
         End Function
     End Class
 
