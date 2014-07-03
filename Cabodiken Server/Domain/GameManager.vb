@@ -63,6 +63,10 @@ Namespace Domain
 
         End Function
 
+        Public Function RegisterUser(userName As String, Host As Integer, password As String)
+
+        End Function
+
         Private Function GenerateGameSessionId() As String
 
         End Function

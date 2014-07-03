@@ -1,4 +1,5 @@
 ﻿Imports MFierro.Cabodiken.DataObjects
+Imports MFierro.Cabodiken.Domain
 
 Namespace WebServices
 
@@ -27,6 +28,8 @@ Namespace WebServices
 
         Public Function RegisterUserV01(userName As String, host As Integer, password As String) As String _
             Implements IWebServiceAuthentication.RegisterUserV01
+
+            UserManager.Instance.
 
         End Function
     End Class
