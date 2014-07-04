@@ -7,17 +7,23 @@
         Private _base64String As String
 
         <DataMember()>
-        Public ReadOnly Property Id As Integer
+        Public Property Id As Integer
             Get
                 Return _id
             End Get
+            Set(value As Integer)
+                _id = value
+            End Set
         End Property
 
         <DataMember()>
-        Public ReadOnly Property Base64String As String
+        Public Property Base64String As String
             Get
                 Return _base64String
             End Get
+            Set(value As String)
+                _base64String = value
+            End Set
         End Property
 
         Public Sub New(id As Integer, base64String As String)

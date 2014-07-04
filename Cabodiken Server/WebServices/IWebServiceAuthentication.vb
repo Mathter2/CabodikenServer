@@ -15,10 +15,10 @@ Namespace WebServices
         Function ChangeMessageV01(sessionTokenId As String, message As String) As String
 
         <OperationContract()>
-        Function AddFriendV01(sessionTokenId As String, userName As String, host As Integer) As String
+        Function AddFriendV01(sessionTokenId As String, userName As String, host As Integer) As Boolean
 
         <OperationContract()>
-        Function RegisterUserV01(userName As String, host As Integer, password As String) As String
+        Function RegisterUserV01(userName As String, host As Integer, password As String) As Boolean
 
     End Interface
 End Namespace

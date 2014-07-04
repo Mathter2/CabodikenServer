@@ -1,1 +1,1 @@
-﻿<%@ ServiceHost Language="VB" Debug="true" Service="MFierro.Cabodiken.WebServiceAuthentication" CodeBehind="WebServiceAuthentication.svc.vb" %>
+﻿<%@ ServiceHost Language="VB" Debug="true" Service="MFierro.Cabodiken.WebServices.WebServiceAuthentication" CodeBehind="WebServiceAuthentication.svc.vb" %>

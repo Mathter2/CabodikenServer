@@ -6,8 +6,10 @@ Namespace WebServices
     Public Class WebServiceAuthentication
         Implements IWebServiceAuthentication
 
-        Public Function AddFriendV01(sessionTokenId As String, userName As String, host As Integer) As String _
+        Public Function AddFriendV01(sessionTokenId As String, userName As String, host As Integer) As Boolean _
             Implements IWebServiceAuthentication.AddFriendV01
+
+            Return UserManager.Instance.AddFriend(sessionTokenId, userName, host)
 
         End Function
 
@@ -19,6 +21,8 @@ Namespace WebServices
         Public Function GetFriendsListV01(sessionTokenId As String) As DataObjects.UserData() _
             Implements IWebServiceAuthentication.GetFriendsListV01
 
+            Return UserManager.Instance.GetFriendsList(sessionTokenId)
+
         End Function
 
         Public Function UserAuthenticateV01(userName As String, host As Integer, password As String) As String _
@@ -28,11 +32,13 @@ Namespace WebServices
 
         End Function
 
-        Public Function RegisterUserV01(userName As String, host As Integer, password As String) As String _
+        Public Function RegisterUserV01(userName As String, host As Integer, password As String) As Boolean _
             Implements IWebServiceAuthentication.RegisterUserV01
 
-            UserManager.Instance.RegisterUser(userName, host, password)
+            Return UserManager.Instance.RegisterUser(userName, host, password)
+
         End Function
+
     End Class
 
 End Namespace

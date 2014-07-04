@@ -7,7 +7,7 @@
         Private _customDices As ObjectData()
         Private _customDecks As ObjectData()
         Private _customTokens As ObjectData()
-        Private _place As Place
+        Private _place As Integer
 
         <DataMember()>
         Public ReadOnly Property CustomDices As ObjectData()
@@ -31,15 +31,16 @@
         End Property
 
         <DataMember()>
-        Public ReadOnly Property Place As Place
+        Public ReadOnly Property Place As Integer
             Get
                 Return _place
             End Get
         End Property
 
-        Public Sub New(name As String, host As Host, isOnline As Boolean, customDices As ObjectData(), _
-                       customDecks As ObjectData(), customTokens As ObjectData(), place As Place)
-            MyBase.New(name, host, isOnline)
+        Public Sub New(id As Integer, name As String, host As Integer, message As String, isOnline As Boolean, _
+                       customDices As ObjectData(), customDecks As ObjectData(), _
+                       customTokens As ObjectData(), place As Integer)
+            MyBase.New(id, name, host, message, isOnline)
             _customDices = customDices
             _customDecks = customDecks
             _customTokens = customTokens

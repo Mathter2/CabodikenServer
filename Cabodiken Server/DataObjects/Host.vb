@@ -1,6 +1,5 @@
 ﻿Namespace DataObjects
 
-    <DataContract(name:="Host")>
     Public Enum Host
         InternalServer = 0
         Facebook = 1
