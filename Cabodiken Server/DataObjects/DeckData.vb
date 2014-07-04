@@ -1,10 +1,12 @@
 ﻿Namespace DataObjects
 
+    <DataContract()>
     Public Class DeckData
         Inherits ObjectData
 
         Private _cards As CardData()
 
+        <DataMember()>
         Public ReadOnly Property Cards As CardData()
             Get
                 Return _cards

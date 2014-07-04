@@ -1,22 +1,27 @@
 ﻿Namespace DataObjects
+
+    <DataContract()>
     Public Class InvitationData
 
         Private _gameName As String
         Private _gameSessionId As String
         Private _sender As UserData
 
+        <DataMember()>
         Public ReadOnly Property GameName As String
             Get
                 Return _gameName
             End Get
         End Property
 
+        <DataMember()>
         Public ReadOnly Property GameSessionId As String
             Get
                 Return _gameSessionId
             End Get
         End Property
 
+        <DataMember()>
         Public ReadOnly Property Sender As UserData
             Get
                 Return _sender

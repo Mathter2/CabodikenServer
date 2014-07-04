@@ -1,10 +1,11 @@
 ﻿Namespace DataObjects
-
+    <DataContract()>
     Public Class BoardData
         Inherits ObjectData
 
         Private _image As ImageData
 
+        <DataMember()>
         Public ReadOnly Property Image As ImageData
             Get
                 Return _image

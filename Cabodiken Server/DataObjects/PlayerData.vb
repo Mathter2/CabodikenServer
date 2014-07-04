@@ -1,5 +1,6 @@
 ﻿Namespace DataObjects
 
+    <DataContract()>
     Public Class PlayerData
         Inherits UserData
 
@@ -8,24 +9,28 @@
         Private _customTokens As ObjectData()
         Private _place As Place
 
+        <DataMember()>
         Public ReadOnly Property CustomDices As ObjectData()
             Get
                 Return _customDices
             End Get
         End Property
 
+        <DataMember()>
         Public ReadOnly Property CustomDecks As ObjectData()
             Get
                 Return _customDecks
             End Get
         End Property
 
+        <DataMember()>
         Public ReadOnly Property CustomTokens As ObjectData()
             Get
                 Return _customTokens
             End Get
         End Property
 
+        <DataMember()>
         Public ReadOnly Property Place As Place
             Get
                 Return _place

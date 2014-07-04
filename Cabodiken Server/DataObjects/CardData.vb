@@ -1,17 +1,19 @@
 ﻿Namespace DataObjects
-
+    <DataContract()>
     Public Class CardData
         Inherits ObjectData
 
         Private _back As ImageData
         Private _front As ImageData
 
+        <DataMember()>
         Public ReadOnly Property Back As ImageData
             Get
                 Return _back
             End Get
         End Property
 
+        <DataMember()>
         Public ReadOnly Property Front As ImageData
             Get
                 Return _front

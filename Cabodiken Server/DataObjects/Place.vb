@@ -1,5 +1,6 @@
 ﻿Namespace DataObjects
 
+    <DataContract(Name:="Place")>
     Public Enum Place
         Owner = 0
         Left = 1

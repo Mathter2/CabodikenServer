@@ -1,15 +1,19 @@
 ﻿Namespace DataObjects
+
+    <DataContract()>
     Public Class ImageData
 
         Private _id As Integer
         Private _base64String As String
 
+        <DataMember()>
         Public ReadOnly Property Id As Integer
             Get
                 Return _id
             End Get
         End Property
 
+        <DataMember()>
         Public ReadOnly Property Base64String As String
             Get
                 Return _base64String

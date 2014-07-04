@@ -1,10 +1,12 @@
 ﻿Namespace DataObjects
 
+    <DataContract()>
     Public Class DiceData
         Inherits ObjectData
 
         Private _sides As ImageData()
 
+        <DataMember()>
         Public ReadOnly Property Sides As ImageData()
             Get
                 Return _sides

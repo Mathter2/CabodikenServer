@@ -1,4 +1,6 @@
 ﻿Namespace DataObjects
+
+    <DataContract()>
     Public Class GameSessionData
 
         Private _game As ObjectData
@@ -6,24 +8,28 @@
         Private _owner As PlayerData
         Private _players As PlayerData()
 
+        <DataMember()>
         Public ReadOnly Property Game As ObjectData
             Get
                 Return _game
             End Get
         End Property
 
+        <DataMember()>
         Public ReadOnly Property GameSessionId As String
             Get
                 Return _gameSessionId
             End Get
         End Property
 
+        <DataMember()>
         Public ReadOnly Property Owner As PlayerData
             Get
                 Return _owner
             End Get
         End Property
 
+        <DataMember()>
         Public ReadOnly Property Players As PlayerData()
             Get
                 Return _players
