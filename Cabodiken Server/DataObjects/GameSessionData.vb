@@ -6,7 +6,7 @@
         Private _game As ObjectData
         Private _gameSessionId As String
         Private _owner As PlayerData
-        Private _players As PlayerData()
+        Private _players As List(Of PlayerData)
 
         <DataMember()>
         Public Property Game As ObjectData
@@ -41,18 +41,27 @@
         <DataMember()>
         Public Property Players As PlayerData()
             Get
-                Return _players
+                Return _players.ToArray()
             End Get
             Set(value As PlayerData())
-                _players = value
+                For Each player As PlayerData In value
+                    _players.Add(player)
+                Next
             End Set
         End Property
 
-        Public Sub New(game As ObjectData, gameSessionId As String, owner As PlayerData, players As PlayerData())
+        Public Sub New(game As ObjectData, gameSessionId As String, owner As PlayerData, _
+                       ParamArray players As PlayerData())
             _game = game
             _gameSessionId = gameSessionId
             _owner = owner
-            _players = players
+            For Each player As PlayerData In players
+                _players.Add(player)
+            Next
+        End Sub
+
+        Public Sub AddPlayer(player As PlayerData)
+            _players.Add(player)
         End Sub
 
     End Class

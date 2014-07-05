@@ -17,7 +17,7 @@
         End Property
 
         Public Sub New(id As Integer, name As String, sides As ImageData()())
-            MyBase.New(id, name)
+            MyBase.New(id, name, "TOKEN")
             _sides = sides
         End Sub
 

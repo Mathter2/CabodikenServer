@@ -17,7 +17,7 @@
         End Property
 
         Public Sub New(id As Integer, name As String, cards As CardData())
-            MyBase.New(id, name)
+            MyBase.New(id, name, "DECK")
             _cards = cards
         End Sub
 

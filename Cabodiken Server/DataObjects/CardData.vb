@@ -27,7 +27,7 @@
         End Property
 
         Public Sub New(id As Integer, name As String, back As ImageData, front As ImageData)
-            MyBase.New(id, name)
+            MyBase.New(id, name, "CARD")
             _back = back
             _front = front
         End Sub

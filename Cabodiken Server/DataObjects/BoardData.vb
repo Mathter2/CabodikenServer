@@ -16,7 +16,7 @@
         End Property
 
         Public Sub New(id As Integer, name As String, image As ImageData)
-            MyBase.New(id, name)
+            MyBase.New(id, name, "BOARD")
             _image = image
         End Sub
 
