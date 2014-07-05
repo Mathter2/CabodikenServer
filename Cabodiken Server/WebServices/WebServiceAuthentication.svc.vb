@@ -16,6 +16,9 @@ Namespace WebServices
         Public Function ChangeMessageV01(sessionTokenId As String, message As String) As String _
             Implements IWebServiceAuthentication.ChangeMessageV01
 
+            UserManager.Instance.ChangeUserMessage(sessionTokenId, message)
+            Return message
+
         End Function
 
         Public Function GetFriendsListV01(sessionTokenId As String) As DataObjects.UserData() _

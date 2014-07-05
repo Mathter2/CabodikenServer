@@ -42,6 +42,9 @@ Namespace Domain
 
         Public Sub ChangeUserMessage(sessionTokenId As String, message As String)
 
+            Dim userId As Integer = _users(sessionTokenId).Id
+            DataManager.Instance.ModifyUserMessage(userId, message)
+
         End Sub
 
         Public Function GetFriendsList(sessionTokenId As String) As UserData()
