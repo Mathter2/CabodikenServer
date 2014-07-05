@@ -16,6 +16,15 @@ Namespace Domain
             End Get
         End Property
 
+        Public Sub New(gameId As Integer, gameName As String, gameSessionId As String, owner As PlayerData)
+            Dim gameData As New ObjectData(gameId, gameName, "GAME")
+            _gameSession = New GameSessionData(gameData, gameSessionId, owner)
+            _actionFactory = New ActionFactory
+            _actions = New List(Of ActionData)
+            _lastObjectId = 0
+            _placedObjects = New Dictionary(Of Integer, GameObject)
+        End Sub
+
         Public Sub AddCustomObject(customObject As ObjectData, objectType As String)
 
         End Sub
