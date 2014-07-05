@@ -16,7 +16,7 @@ Namespace WebServices
         Function GetObjectsV01(sessionTokenId As String, objectType As String) As ObjectData()
 
         <OperationContract()>
-        Function JoinGameSessionV01(sessionTokenId As String, gameSessionId As String) As String
+        Function JoinGameSessionV01(sessionTokenId As String, gameSessionId As String) As Boolean
 
         <OperationContract()>
         Sub SendUserInvitationV01(sessionTokenId As String, gameSessionId As String, userId As Integer)

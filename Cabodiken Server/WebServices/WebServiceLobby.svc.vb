@@ -26,7 +26,15 @@ Namespace WebServices
 
         End Function
 
-        Public Function JoinGameSessionV01(sessionTokenId As String, gameSessionId As String) As String Implements IWebServiceLobby.JoinGameSessionV01
+        Public Function JoinGameSessionV01(sessionTokenId As String, gameSessionId As String) As Boolean _
+            Implements IWebServiceLobby.JoinGameSessionV01
+
+            Dim userData As UserData = UserManager.Instance.ValidateSessionToken(sessionTokenId)
+            If userData Is Nothing Then
+                Return Nothing
+            Else
+                Return GameManager.Instance.JoinGameSession(userData, gameSessionId)
+            End If
 
         End Function
 
