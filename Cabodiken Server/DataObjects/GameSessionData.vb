@@ -6,7 +6,7 @@
         Private _game As ObjectData
         Private _gameSessionId As String
         Private _owner As PlayerData
-        Private _players As List(Of PlayerData)
+        Private _players As Dictionary(Of UserData, PlayerData)
 
         <DataMember()>
         Public Property Game As ObjectData
@@ -41,11 +41,11 @@
         <DataMember()>
         Public Property Players As PlayerData()
             Get
-                Return _players.ToArray()
+                Return _players.Values.ToArray
             End Get
             Set(value As PlayerData())
                 For Each player As PlayerData In value
-                    _players.Add(player)
+                    AddPlayer(player)
                 Next
             End Set
         End Property
@@ -56,12 +56,14 @@
             _gameSessionId = gameSessionId
             _owner = owner
             For Each player As PlayerData In players
-                _players.Add(player)
+                AddPlayer(player)
             Next
         End Sub
 
         Public Sub AddPlayer(player As PlayerData)
-            _players.Add(player)
+            Dim userData As New  _
+                        UserData(player.Id, player.Name, player.Host, player.Message, player.IsOnline)
+            _players.Add(userData, player)
         End Sub
 
     End Class
