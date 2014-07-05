@@ -34,10 +34,16 @@ Namespace Domain
 
         End Sub
 
-        Public Function CreateGameSession(sessionTokenId As String, gameId As Integer, _
+        Public Function CreateGameSession(ownerData As UserData, gameId As Integer, _
                                           gameName As String) As String
-            Dim newGame As New Game
+            Dim newGame As Game
             Dim newGameSessionId As String = GenerateGameSessionId(gameName)
+            Dim owner As PlayerData = New PlayerData(ownerData, 0)
+
+            newGame = New Game(gameId, gameName, newGameSessionId, owner)
+            _games.Add(newGameSessionId, newGame)
+
+            Return newGameSessionId
 
         End Function
 
