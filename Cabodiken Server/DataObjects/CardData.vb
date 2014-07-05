@@ -7,17 +7,23 @@
         Private _front As ImageData
 
         <DataMember()>
-        Public ReadOnly Property Back As ImageData
+        Public Property Back As ImageData
             Get
                 Return _back
             End Get
+            Set(value As ImageData)
+                _back = value
+            End Set
         End Property
 
         <DataMember()>
-        Public ReadOnly Property Front As ImageData
+        Public Property Front As ImageData
             Get
                 Return _front
             End Get
+            Set(value As ImageData)
+                _front = value
+            End Set
         End Property
 
         Public Sub New(id As Integer, name As String, back As ImageData, front As ImageData)

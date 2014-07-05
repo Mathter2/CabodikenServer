@@ -32,8 +32,9 @@ Namespace DataObjects
 #Region "Methods"
 
         Public Sub ModifyUserMessage(userId As Integer, message As String)
-            Dim command As DbCommand = GetDBCommand("CALL modify_user_message(" & userId & _
-                                                    ", """ & message & """);")
+            Dim command As DbCommand
+            command = GetDBCommand(GetCommandString("CALL", "modify_user_message", _
+                                                    userId.ToString, Quote(message)))
             command.ExecuteNonQuery()
         End Sub
 

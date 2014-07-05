@@ -7,10 +7,13 @@
         Private _sides As ImageData()
 
         <DataMember()>
-        Public ReadOnly Property Sides As ImageData()
+        Public Property Sides As ImageData()
             Get
                 Return _sides
             End Get
+            Set(value As ImageData())
+                _sides = value
+            End Set
         End Property
 
         Public Sub New(id As Integer, name As String, sides As ImageData())

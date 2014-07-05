@@ -6,10 +6,13 @@
         Private _image As ImageData
 
         <DataMember()>
-        Public ReadOnly Property Image As ImageData
+        Public Property Image As ImageData
             Get
                 Return _image
             End Get
+            Set(value As ImageData)
+                _image = value
+            End Set
         End Property
 
         Public Sub New(id As Integer, name As String, image As ImageData)

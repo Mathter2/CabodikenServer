@@ -9,31 +9,43 @@
         Private _parameters As String()
 
         <DataMember()>
-        Public ReadOnly Property Index As Integer
+        Public Property Index As Integer
             Get
                 Return _index
             End Get
+            Set(value As Integer)
+                _index = value
+            End Set
         End Property
 
         <DataMember()>
-        Public ReadOnly Property Name As String
+        Public Property Name As String
             Get
                 Return _name
             End Get
+            Set(value As String)
+                _name = value
+            End Set
         End Property
 
         <DataMember()>
-        Public ReadOnly Property Owner As UserData
+        Public Property Owner As UserData
             Get
                 Return _owner
             End Get
+            Set(value As UserData)
+                _owner = value
+            End Set
         End Property
 
         <DataMember()>
-        Public ReadOnly Property Parameters As String()
+        Public Property Parameters As String()
             Get
                 Return _parameters
             End Get
+            Set(value As String())
+                _parameters = value
+            End Set
         End Property
 
         Public Sub New(index As Integer, name As String, owner As UserData, parameters As String())

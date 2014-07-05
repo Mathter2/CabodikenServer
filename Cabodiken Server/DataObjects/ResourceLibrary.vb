@@ -9,31 +9,43 @@
         Private _tokens As TokenData()
 
         <DataMember()>
-        Public ReadOnly Property Boards As BoardData()
+        Public Property Boards As BoardData()
             Get
                 Return _boards
             End Get
+            Set(value As BoardData())
+                _boards = value
+            End Set
         End Property
 
         <DataMember()>
-        Public ReadOnly Property Decks As DeckData()
+        Public Property Decks As DeckData()
             Get
                 Return _decks
             End Get
+            Set(value As DeckData())
+                _decks = value
+            End Set
         End Property
 
         <DataMember()>
-        Public ReadOnly Property Dices As DiceData()
+        Public Property Dices As DiceData()
             Get
                 Return _dices
             End Get
+            Set(value As DiceData())
+                _dices = value
+            End Set
         End Property
 
         <DataMember()>
-        Public ReadOnly Property Tokens As TokenData()
+        Public Property Tokens As TokenData()
             Get
                 Return _tokens
             End Get
+            Set(value As TokenData())
+                _tokens = value
+            End Set
         End Property
 
         Public Sub New(boards As BoardData(), decks As DeckData(), dices As DiceData(), tokens As TokenData())

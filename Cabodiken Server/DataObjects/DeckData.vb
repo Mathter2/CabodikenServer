@@ -7,10 +7,13 @@
         Private _cards As CardData()
 
         <DataMember()>
-        Public ReadOnly Property Cards As CardData()
+        Public Property Cards As CardData()
             Get
                 Return _cards
             End Get
+            Set(value As CardData())
+                _cards = value
+            End Set
         End Property
 
         Public Sub New(id As Integer, name As String, cards As CardData())

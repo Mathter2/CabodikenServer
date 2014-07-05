@@ -9,31 +9,43 @@
         Private _players As PlayerData()
 
         <DataMember()>
-        Public ReadOnly Property Game As ObjectData
+        Public Property Game As ObjectData
             Get
                 Return _game
             End Get
+            Set(value As ObjectData)
+                _game = value
+            End Set
         End Property
 
         <DataMember()>
-        Public ReadOnly Property GameSessionId As String
+        Public Property GameSessionId As String
             Get
                 Return _gameSessionId
             End Get
+            Set(value As String)
+                _gameSessionId = value
+            End Set
         End Property
 
         <DataMember()>
-        Public ReadOnly Property Owner As PlayerData
+        Public Property Owner As PlayerData
             Get
                 Return _owner
             End Get
+            Set(value As PlayerData)
+                _owner = value
+            End Set
         End Property
 
         <DataMember()>
-        Public ReadOnly Property Players As PlayerData()
+        Public Property Players As PlayerData()
             Get
                 Return _players
             End Get
+            Set(value As PlayerData())
+                _players = value
+            End Set
         End Property
 
         Public Sub New(game As ObjectData, gameSessionId As String, owner As PlayerData, players As PlayerData())
