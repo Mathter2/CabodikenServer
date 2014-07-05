@@ -1,1 +1,1 @@
-﻿<%@ ServiceHost Language="VB" Debug="true" Service="MFierro.Cabodiken.WebServiceLobby" CodeBehind="WebServiceLobby.svc.vb" %>
+﻿<%@ ServiceHost Language="VB" Debug="true" Service="MFierro.Cabodiken.WebServices.WebServiceLobby" CodeBehind="WebServiceLobby.svc.vb" %>
