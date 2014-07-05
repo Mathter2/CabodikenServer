@@ -29,9 +29,28 @@ Namespace Domain
 
         End Sub
 
-        Public Sub AddUser(user As UserData)
+        Public Function AddUser(user As UserData) As Boolean
 
-        End Sub
+            Dim playerPosition As Integer
+            Dim playerNumber As Integer = _gameSession.Players.Count + 2
+            If playerNumber > 8 Then
+                Return False
+            Else
+                Select Case playerNumber
+                    Case 2, 6
+                        playerPosition = 3
+                    Case 3, 7
+                        playerPosition = 1
+                    Case 4, 8
+                        playerPosition = 2
+                    Case 5
+                        playerPosition = 0
+                End Select
+                _gameSession.AddPlayer(New PlayerData(user, playerPosition))
+                Return True
+            End If
+            
+        End Function
 
         Public Sub ExecuteAction(owner As UserData, action As String, ParamArray parameters As String())
 
