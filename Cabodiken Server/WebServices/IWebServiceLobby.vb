@@ -10,7 +10,7 @@ Namespace WebServices
         Sub AddCustomObjectV01(sessionTokenId As String, gameSessionId As String, objectId As Integer, objectType As String)
 
         <OperationContract()>
-        Function CreateGameSessionV01(sessionTokenId As String, gameId As Integer) As String
+        Function CreateGameSessionV01(sessionTokenId As String, gameId As Integer, gameName As String) As String
 
         <OperationContract()>
         Function GetObjectsV01(sessionTokenId As String, objectType As String) As ObjectData()

@@ -1,4 +1,7 @@
-﻿Namespace WebServices
+﻿Imports MFierro.Cabodiken.DataObjects
+Imports MFierro.Cabodiken.Domain
+
+Namespace WebServices
 
     Public Class WebServiceLobby
         Implements IWebServiceLobby
@@ -7,7 +10,15 @@
 
         End Sub
 
-        Public Function CreateGameSessionV01(sessionTokenId As String, gameId As Integer) As String Implements IWebServiceLobby.CreateGameSessionV01
+        Public Function CreateGameSessionV01(sessionTokenId As String, gameId As Integer, gameName As String) _
+            As String Implements IWebServiceLobby.CreateGameSessionV01
+
+            Dim userData As UserData = UserManager.Instance.ValidateSessionToken(sessionTokenId)
+            If userData Is Nothing Then
+                Return Nothing
+            Else
+                Return GameManager.Instance.CreateGameSession(userData, gameId, gameName)
+            End If
 
         End Function
 
