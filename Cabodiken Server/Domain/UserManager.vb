@@ -85,6 +85,16 @@ Namespace Domain
 
         End Function
 
+        Public Function ValidateSessionToken(sessionTokenId As String) As UserData
+
+            If _users.ContainsKey(sessionTokenId) Then
+                Return _users(sessionTokenId)
+            Else
+                Return Nothing
+            End If
+
+        End Function
+
         Private Function GenerateSessionTokenId(userName As String) As String
             Dim sessionTokenId As String = ""
             Dim ticks As String = Date.Now.Ticks.ToString
