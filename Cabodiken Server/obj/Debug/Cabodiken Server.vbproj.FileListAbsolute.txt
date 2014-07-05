@@ -1,9 +1,0 @@
-C:\Users\Mathter\Documents\Visual Studio 2013\Projects\Cabodiken Server\Cabodiken Server\bin\Cabodiken Server.dll.config
-C:\Users\Mathter\Documents\Visual Studio 2013\Projects\Cabodiken Server\Cabodiken Server\bin\Cabodiken Server.dll
-C:\Users\Mathter\Documents\Visual Studio 2013\Projects\Cabodiken Server\Cabodiken Server\bin\Cabodiken Server.pdb
-C:\Users\Mathter\Documents\Visual Studio 2013\Projects\Cabodiken Server\Cabodiken Server\bin\Cabodiken Server.xml
-C:\Users\Mathter\Documents\Visual Studio 2013\Projects\Cabodiken Server\Cabodiken Server\obj\Debug\MFierro.Cabodiken.Resources.resources
-C:\Users\Mathter\Documents\Visual Studio 2013\Projects\Cabodiken Server\Cabodiken Server\obj\Debug\Cabodiken Server.vbproj.GenerateResource.Cache
-C:\Users\Mathter\Documents\Visual Studio 2013\Projects\Cabodiken Server\Cabodiken Server\obj\Debug\Cabodiken Server.dll
-C:\Users\Mathter\Documents\Visual Studio 2013\Projects\Cabodiken Server\Cabodiken Server\obj\Debug\Cabodiken Server.xml
-C:\Users\Mathter\Documents\Visual Studio 2013\Projects\Cabodiken Server\Cabodiken Server\obj\Debug\Cabodiken Server.pdb
