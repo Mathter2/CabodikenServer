@@ -62,10 +62,22 @@
         End Sub
 
         Public Sub AddPlayer(player As PlayerData)
+
             Dim userData As New  _
                         UserData(player.Id, player.Name, player.Host, player.Message, player.IsOnline)
             _players.Add(userData, player)
+
         End Sub
+
+        Public Function GetPlayer(user As UserData) As PlayerData
+
+            If Owner.Equals(user) Then
+                Return Owner
+            Else
+                Return _players(user)
+            End If
+
+        End Function
 
     End Class
 End Namespace
