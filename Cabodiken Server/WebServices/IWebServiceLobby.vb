@@ -7,7 +7,8 @@ Namespace WebServices
     Public Interface IWebServiceLobby
 
         <OperationContract()>
-        Sub AddCustomObjectV01(sessionTokenId As String, gameSessionId As String, objectId As Integer, objectType As String)
+        Function AddCustomObjectV01(sessionTokenId As String, gameSessionId As String, objectId As Integer, _
+                               objectName As String, objectType As String) As Boolean
 
         <OperationContract()>
         Function CreateGameSessionV01(sessionTokenId As String, gameId As Integer, gameName As String) As String

@@ -6,14 +6,26 @@ Namespace WebServices
     Public Class WebServiceLobby
         Implements IWebServiceLobby
 
-        Public Sub AddCustomObjectV01(sessionTokenId As String, gameSessionId As String, objectId As Integer, objectType As String) Implements IWebServiceLobby.AddCustomObjectV01
+        Public Function AddCustomObjectV01(sessionTokenId As String, gameSessionId As String, objectId As Integer, _
+                                      objectName As String, objectType As String) As Boolean _
+                                  Implements IWebServiceLobby.AddCustomObjectV01
 
-        End Sub
+            Dim userData As UserData = UserManager.Instance.ValidateSessionToken(sessionTokenId)
+
+            If userData Is Nothing Then
+                Return False
+            Else
+                GameManager.Instance.AddCustomObject(userData, gameSessionId, objectId, objectName, objectType)
+                Return True
+            End If
+
+        End Function
 
         Public Function CreateGameSessionV01(sessionTokenId As String, gameId As Integer, gameName As String) _
             As String Implements IWebServiceLobby.CreateGameSessionV01
 
             Dim userData As UserData = UserManager.Instance.ValidateSessionToken(sessionTokenId)
+
             If userData Is Nothing Then
                 Return Nothing
             Else
@@ -22,7 +34,10 @@ Namespace WebServices
 
         End Function
 
-        Public Function GetObjectsV01(sessionTokenId As String, objectType As String) As DataObjects.ObjectData() Implements IWebServiceLobby.GetObjectsV01
+        Public Function GetObjectsV01(sessionTokenId As String, objectType As String) As ObjectData() _
+            Implements IWebServiceLobby.GetObjectsV01
+
+
 
         End Function
 
@@ -38,9 +53,8 @@ Namespace WebServices
 
         End Function
 
-        Public Sub SendUserInvitationV01(sessionTokenId As String, gameSessionId As String, _
-                                         friendName As String, friendHost As Integer) _
-                                     Implements IWebServiceLobby.SendUserInvitationV01
+        Public Sub SendUserInvitationV01(sessionTokenId As String, gameSessionId As String, friendName As String, _
+                                         friendHost As Integer) Implements IWebServiceLobby.SendUserInvitationV01
 
             Dim userData As UserData = UserManager.Instance.ValidateSessionToken(sessionTokenId)
             Dim friendData As UserData = UserManager.Instance.GetUser(friendName, friendHost)
@@ -48,14 +62,16 @@ Namespace WebServices
 
         End Sub
 
-        Public Function UpdateUserInvitationsV01(sessionTokenId As String) As DataObjects.InvitationData() Implements IWebServiceLobby.UpdateUserInvitationsV01
+        Public Function UpdateUserInvitationsV01(sessionTokenId As String) As InvitationData() _
+            Implements IWebServiceLobby.UpdateUserInvitationsV01
 
             Dim userData As UserData = UserManager.Instance.ValidateSessionToken(sessionTokenId)
             Return GameManager.Instance.GetUserInvitations(userData)
 
         End Function
 
-        Public Function UpdateGameSessionV01(sessionTokenId As String, gameSessionId As String) As DataObjects.GameSessionData Implements IWebServiceLobby.UpdateGameSessionV01
+        Public Function UpdateGameSessionV01(sessionTokenId As String, gameSessionId As String) As GameSessionData _
+            Implements IWebServiceLobby.UpdateGameSessionV01
 
             If UserManager.Instance.ValidateSessionToken(sessionTokenId) IsNot Nothing Then
                 Return GameManager.Instance.GetGameSession(gameSessionId)
