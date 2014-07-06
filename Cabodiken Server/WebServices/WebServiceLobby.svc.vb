@@ -38,15 +38,30 @@ Namespace WebServices
 
         End Function
 
-        Public Sub SendUserInvitationV01(sessionTokenId As String, gameSessionId As String, userId As Integer) Implements IWebServiceLobby.SendUserInvitationV01
+        Public Sub SendUserInvitationV01(sessionTokenId As String, gameSessionId As String, _
+                                         friendName As String, friendHost As Integer) _
+                                     Implements IWebServiceLobby.SendUserInvitationV01
+
+            Dim userData As UserData = UserManager.Instance.ValidateSessionToken(sessionTokenId)
+            Dim friendData As UserData = UserManager.Instance.GetUser(friendName, friendHost)
+            GameManager.Instance.CreateUserInvitation(gameSessionId, userData, friendData)
 
         End Sub
 
         Public Function UpdateUserInvitationsV01(sessionTokenId As String) As DataObjects.InvitationData() Implements IWebServiceLobby.UpdateUserInvitationsV01
 
+            Dim userData As UserData = UserManager.Instance.ValidateSessionToken(sessionTokenId)
+            Return GameManager.Instance.GetUserInvitations(userData)
+
         End Function
 
         Public Function UpdateGameSessionV01(sessionTokenId As String, gameSessionId As String) As DataObjects.GameSessionData Implements IWebServiceLobby.UpdateGameSessionV01
+
+            If UserManager.Instance.ValidateSessionToken(sessionTokenId) IsNot Nothing Then
+                Return GameManager.Instance.GetGameSession(gameSessionId)
+            Else
+                Return Nothing
+            End If
 
         End Function
     End Class

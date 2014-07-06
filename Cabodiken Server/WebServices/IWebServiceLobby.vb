@@ -19,7 +19,7 @@ Namespace WebServices
         Function JoinGameSessionV01(sessionTokenId As String, gameSessionId As String) As Boolean
 
         <OperationContract()>
-        Sub SendUserInvitationV01(sessionTokenId As String, gameSessionId As String, userId As Integer)
+        Sub SendUserInvitationV01(sessionTokenId As String, gameSessionId As String, friendName As String, friendHost As Integer)
 
         <OperationContract()>
         Function UpdateGameSessionV01(sessionTokenId As String, gameSessionId As String) As GameSessionData
