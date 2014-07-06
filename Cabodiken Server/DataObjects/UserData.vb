@@ -76,6 +76,10 @@
             End If
         End Function
 
+        Public Overrides Function GetHashCode() As Integer
+            Return Id.GetHashCode
+        End Function
+
     End Class
 
 End Namespace
