@@ -85,7 +85,14 @@ Namespace Domain
 
         End Function
 
-        Public Function GetUserInvitations(sessionTokenId As String) As InvitationData()
+        Public Function GetUserInvitations(user As UserData) As InvitationData()
+
+            If _invitations.ContainsKey(user) Then
+                Return _invitations(user).ToArray
+            Else
+                Return Nothing
+            End If
+
 
         End Function
 
