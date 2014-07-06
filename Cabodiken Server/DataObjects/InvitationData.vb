@@ -43,5 +43,15 @@
             _sender = sender
         End Sub
 
+        Public Overrides Function Equals(obj As Object) As Boolean
+            If TypeOf obj Is InvitationData Then
+                Dim otherInvitationData As InvitationData = CType(obj, InvitationData)
+                Return Me.GameSessionId = otherInvitationData.GameSessionId AndAlso _
+                    Me.Sender.Equals(otherInvitationData.Sender)
+            Else
+                Return False
+            End If
+        End Function
+
     End Class
 End Namespace
