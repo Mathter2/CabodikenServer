@@ -49,11 +49,12 @@ Namespace Domain
 
         End Function
 
-        Public Sub CreateUserInvitation(gameSessionId As String, gameName As String, user As UserData, _
-                                        friendData As UserData)
+        Public Sub CreateUserInvitation(gameSessionId As String, user As UserData, friendData As UserData)
 
+            Dim gameName As String = _games(gameSessionId).GameSession.Game.Name
             Dim invitation As New InvitationData(gameName, gameSessionId, user)
             Dim friendInvitations As List(Of InvitationData)
+
             If _invitations.ContainsKey(friendData) Then
                 friendInvitations = _invitations(friendData)
                 If Not friendInvitations.Contains(invitation) Then
