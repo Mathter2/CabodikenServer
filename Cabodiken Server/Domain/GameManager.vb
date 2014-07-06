@@ -32,7 +32,12 @@ Namespace Domain
 
 #Region "Methods"
 
-        Public Sub AddCustomObject(sessionTokenId As String, gameSessionId As String, objectId As Integer, objectType As String)
+        Public Sub AddCustomObject(user As UserData, gameSessionId As String, objectId As Integer, _
+                                   objectName As String, objectType As String)
+
+            Dim player As PlayerData = _games(gameSessionId).GameSession.GetPlayer(user)
+
+            player.AddCustomObject(objectId, objectName, objectType)
 
         End Sub
 
@@ -93,7 +98,6 @@ Namespace Domain
             Else
                 Return Nothing
             End If
-
 
         End Function
 
