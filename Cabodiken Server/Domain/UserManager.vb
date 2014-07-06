@@ -59,7 +59,15 @@ Namespace Domain
         End Function
 
         Public Function GetUser(sessionTokenId As String) As UserData
+
             Return _users(sessionTokenId)
+
+        End Function
+
+        Public Function GetUser(userName As String, host As Integer) As UserData
+
+            Return DataManager.Instance.GetUser(userName, host)
+
         End Function
 
         Public Function LogIn(userName As String, host As Integer, password As String) As String
