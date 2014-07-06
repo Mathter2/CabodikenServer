@@ -55,6 +55,7 @@
             _game = game
             _gameSessionId = gameSessionId
             _owner = owner
+            _players = New Dictionary(Of UserData, PlayerData)
             For Each player As PlayerData In players
                 AddPlayer(player)
             Next
