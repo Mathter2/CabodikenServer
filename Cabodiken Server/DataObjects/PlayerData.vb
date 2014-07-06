@@ -75,6 +75,21 @@
             Me.New(userData, New List(Of ObjectData), New List(Of ObjectData), New List(Of ObjectData), place)
         End Sub
 
+        Public Sub AddCustomObject(objectId As Integer, objectName As String, objectType As String)
+
+            Dim customObject As New ObjectData(objectId, objectName, objectType)
+
+            Select Case objectType
+                Case "DECK"
+                    _customDecks.Add(customObject)
+                Case "DICE"
+                    _customDices.Add(customObject)
+                Case "TOKEN"
+                    _customTokens.Add(customObject)
+            End Select
+
+        End Sub
+
     End Class
 
 End Namespace
