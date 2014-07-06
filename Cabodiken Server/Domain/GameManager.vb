@@ -7,7 +7,7 @@ Namespace Domain
 
         Private Shared _instance As GameManager = New GameManager()
         Private _games As Dictionary(Of String, Game)
-        Private _invitations As Dictionary(Of UserData, InvitationData)
+        Private _invitations As Dictionary(Of UserData, List(Of InvitationData))
         Private _allowedChars As Char()
         Private _random As Random
 
@@ -23,7 +23,7 @@ Namespace Domain
 
         Private Sub New()
             _games = New Dictionary(Of String, Game)
-            _invitations = New Dictionary(Of UserData, InvitationData)
+            _invitations = New Dictionary(Of UserData, List(Of InvitationData))
             _allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLOMNOPQRSTUVWXYZ0123456789".ToCharArray()
             _random = New Random
         End Sub
@@ -49,7 +49,21 @@ Namespace Domain
 
         End Function
 
-        Public Sub CreateUserInvitation(sessionTokenId As String, gameSessionId As String, username As String, host As Host)
+        Public Sub CreateUserInvitation(gameSessionId As String, gameName As String, user As UserData, _
+                                        friendData As UserData)
+
+            Dim invitation As New InvitationData(gameName, gameSessionId, user)
+            Dim friendInvitations As List(Of InvitationData)
+            If _invitations.ContainsKey(friendData) Then
+                friendInvitations = _invitations(friendData)
+                If Not friendInvitations.Contains(invitation) Then
+                    friendInvitations.Add(invitation)
+                End If
+            Else
+                friendInvitations = New List(Of InvitationData)
+                friendInvitations.Add(invitation)
+                _invitations.Add(friendData, friendInvitations)
+            End If
 
         End Sub
 
@@ -62,6 +76,8 @@ Namespace Domain
         End Function
 
         Public Function GetGameSession(gameSessionId As String) As GameSessionData
+
+            Return _games(gameSessionId).GameSession
 
         End Function
 
