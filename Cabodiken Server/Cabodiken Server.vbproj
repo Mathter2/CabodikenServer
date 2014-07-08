@@ -103,7 +103,6 @@
     <Compile Include="DataObjects\DiceData.vb" />
     <Compile Include="DataObjects\GameSessionData.vb" />
     <Compile Include="DataObjects\Host.vb" />
-    <Compile Include="DataObjects\ImageData.vb" />
     <Compile Include="DataObjects\InvitationData.vb" />
     <Compile Include="DataObjects\ObjectData.vb" />
     <Compile Include="DataObjects\Place.vb" />
