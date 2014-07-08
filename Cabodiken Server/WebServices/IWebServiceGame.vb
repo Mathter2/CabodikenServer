@@ -6,7 +6,7 @@ Namespace WebServices
     Public Interface IWebServiceGame
 
         <OperationContract()>
-        Sub ExecuteActionV01(sessionTokenId As String, gameSessionId As String, actionName As String, actionParameter As String())
+        Function ExecuteActionV01(sessionTokenId As String, gameSessionId As String, actionName As String, actionParameters As String()) As Boolean
 
         <OperationContract()>
         Function GetActionsV01(sessionTokenId As String, gameSessionId As String, lastActionIndex As Integer) As ActionData()

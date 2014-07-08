@@ -5,13 +5,25 @@ Namespace WebServices
     Public Class WebServiceGame
         Implements IWebServiceGame
 
-        Public Sub ExecuteActionV01(sessionTokenId As String, gameSessionId As String, actionName As String, _
-                                    actionParameter() As String) Implements IWebServiceGame.ExecuteActionV01
+        Public Function ExecuteActionV01(sessionTokenId As String, gameSessionId As String, _
+                                         actionName As String, actionParameters() As String) As Boolean _
+                                         Implements IWebServiceGame.ExecuteActionV01
 
-        End Sub
+            Dim userData As UserData = UserManager.Instance.ValidateSessionToken(sessionTokenId)
+
+            If userData Is Nothing Then
+                Return False
+            Else
+                Return GameManager.Instance.ExecuteAction(userData, gameSessionId, actionName, actionParameters)
+            End If
+
+        End Function
 
         Public Function GetActionsV01(sessionTokenId As String, gameSessionId As String, _
-                                      lastActionIndex As Integer) As DataObjects.ActionData() Implements IWebServiceGame.GetActionsV01
+                                      lastActionIndex As Integer) As DataObjects.ActionData() _
+                                      Implements IWebServiceGame.GetActionsV01
+
+
 
         End Function
 
@@ -25,8 +37,6 @@ Namespace WebServices
             Else
                 Return GameManager.Instance.GetResources(gameSessionId)
             End If
-
-
 
         End Function
     End Class
