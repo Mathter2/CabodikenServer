@@ -38,7 +38,7 @@ Namespace DataObjects
             command.ExecuteNonQuery()
         End Sub
 
-        Public Function GetFriends(userId As Integer) As UserData()
+        Public Function GetFriends(userId As Integer) As List(Of UserData)
             Dim friendsList As New List(Of UserData)
             Dim command As DbCommand = GetDBCommand("CALL get_friends(" & userId & ");")
             Dim dataReader As DbDataReader
@@ -57,10 +57,208 @@ Namespace DataObjects
                 dataReader.Close()
                 command.Dispose()
             End Try
-            Return friendsList.ToArray()
+            Return friendsList
         End Function
 
-        Public Function GetObject(objectId As Integer, objectType As String) As ObjectData()
+        Public Function GetUserObjects(userId As Integer, objectType As String) As List(Of ObjectData)
+
+            Dim customObjects As New List(Of ObjectData)
+            Dim command As DbCommand
+            Dim dataReader As DbDataReader
+            Dim storeProcedure As String = ""
+
+            Select Case objectType
+                Case "DECK"
+                    storeProcedure = "get_user_decks"
+                Case "DICE"
+                    storeProcedure = "get_user_dices"
+                Case "TOKEN"
+                    storeProcedure = "get_user_tokens"
+                Case "GAME"
+                    storeProcedure = "get_user_games"
+            End Select
+
+            command = GetDBCommand(GetCommandString("CALL", storeProcedure, userId.ToString))
+            dataReader = command.ExecuteReader()
+
+            Try
+                If dataReader.HasRows Then
+                    Do While dataReader.Read()
+                        Dim id As Integer = dataReader.GetInt32(0)
+                        Dim name As String = dataReader.GetString(1)
+                        customObjects.Add(New ObjectData(id, name, objectType))
+                    Loop
+                End If
+            Finally
+                dataReader.Close()
+                command.Dispose()
+            End Try
+
+            Return customObjects
+
+        End Function
+
+        Public Function GetGameObjects(gameId As Integer, objectType As String) As List(Of ObjectData)
+
+            Dim gameObjects As New List(Of ObjectData)
+            Dim command As DbCommand
+            Dim dataReader As DbDataReader
+            Dim storeProcedure As String = ""
+
+            Select Case objectType
+                Case "DECK"
+                    storeProcedure = "get_game_decks"
+                Case "DICE"
+                    storeProcedure = "get_game_dices"
+                Case "TOKEN"
+                    storeProcedure = "get_game_tokens"
+                Case "BOARD"
+                    storeProcedure = "get_game_boards"
+            End Select
+
+            command = GetDBCommand(GetCommandString("CALL", storeProcedure, gameId.ToString))
+            dataReader = command.ExecuteReader()
+
+            Try
+                If dataReader.HasRows Then
+                    Do While dataReader.Read()
+                        Dim id As Integer = dataReader.GetInt32(0)
+                        Dim name As String = dataReader.GetString(1)
+                        gameObjects.Add(New ObjectData(id, name, objectType))
+                    Loop
+                End If
+            Finally
+                dataReader.Close()
+                command.Dispose()
+            End Try
+
+            Return gameObjects
+
+        End Function
+
+        Public Function GetDeckData(deck As ObjectData) As DeckData
+
+            Dim command As DbCommand
+            Dim dataReader As DbDataReader
+            Dim cards As New List(Of CardData)
+
+            command = GetDBCommand(GetCommandString("CALL", "get_deck_data", deck.Id.ToString))
+            dataReader = command.ExecuteReader()
+
+            Try
+                If dataReader.HasRows Then
+                    Do While dataReader.Read()
+                        Dim id As Integer = dataReader.GetInt32(0)
+                        Dim name As String = dataReader.GetString(1)
+                        Dim frontImage As String = dataReader.GetString(2)
+                        Dim backImage As String = dataReader.GetString(3)
+
+                        cards.Add(New CardData(id, name, backImage, frontImage))
+                    Loop
+                End If
+            Finally
+                dataReader.Close()
+                command.Dispose()
+            End Try
+
+            Return New DeckData(deck.Id, deck.Name, cards.ToArray())
+
+        End Function
+
+        Public Function GetBoardData(board As ObjectData) As BoardData
+
+            Dim command As DbCommand
+            Dim dataReader As DbDataReader
+            Dim boardData As BoardData = Nothing
+
+            command = GetDBCommand(GetCommandString("CALL", "get_board_data", board.Id.ToString))
+            dataReader = command.ExecuteReader()
+
+            Try
+                If dataReader.HasRows Then
+                    Do While dataReader.Read()
+                        Dim id As Integer = dataReader.GetInt32(0)
+                        Dim name As String = dataReader.GetString(1)
+                        Dim image As String = dataReader.GetString(2)
+
+                        boardData = New BoardData(id, name, image)
+                    Loop
+                End If
+            Finally
+                dataReader.Close()
+                command.Dispose()
+            End Try
+
+            Return boardData
+
+        End Function
+
+        Public Function GetDiceData(dice As ObjectData) As DiceData
+
+            Dim command As DbCommand
+            Dim dataReader As DbDataReader
+            Dim sides As New List(Of String)
+
+            command = GetDBCommand(GetCommandString("CALL", "get_dice_data", dice.Id.ToString))
+            dataReader = command.ExecuteReader()
+
+            Try
+                If dataReader.HasRows Then
+                    Do While dataReader.Read()
+                        Dim image As String = dataReader.GetString(1)
+
+                        sides.Add(image)
+                    Loop
+                End If
+            Finally
+                dataReader.Close()
+                command.Dispose()
+            End Try
+
+            Return New DiceData(dice.Id, dice.Name, sides.ToArray())
+
+        End Function
+
+        Public Function GetTokenData(token As ObjectData) As TokenData
+
+            Dim command As DbCommand
+            Dim dataReader As DbDataReader
+            Dim sides As New List(Of List(Of String))
+            Dim sidesMatrix As String()()
+
+            command = GetDBCommand(GetCommandString("CALL", "get_deck_data", token.Id.ToString))
+            dataReader = command.ExecuteReader()
+
+            Try
+                If dataReader.HasRows Then
+                    Dim lastIndex As Integer = -1
+                    Do While dataReader.Read()
+                        Dim newIndex As Integer = dataReader.GetInt32(0)
+                        Dim image As String = dataReader.GetString(2)
+
+                        If Not lastIndex = newIndex Then
+                            lastIndex = newIndex
+                            sides.Add(New List(Of String))
+                        End If
+
+                        sides(sides.Count - 1).Add(image)
+                    Loop
+                End If
+            Finally
+                dataReader.Close()
+                command.Dispose()
+            End Try
+
+            sidesMatrix = New String(sides.Count)() {}
+
+            For horizontalIndex As Integer = 0 To sides.Count - 1
+                sidesMatrix(horizontalIndex) = New String(sides(horizontalIndex).Count) {}
+                For verticalIndex As Integer = 0 To sides(horizontalIndex).Count - 1
+                    sidesMatrix(horizontalIndex)(verticalIndex) = sides(verticalIndex)(horizontalIndex)
+                Next
+            Next
+
+            Return New TokenData(token.Id, token.Name, sidesMatrix)
 
         End Function
 
