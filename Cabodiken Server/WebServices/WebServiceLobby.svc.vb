@@ -21,6 +21,13 @@ Namespace WebServices
 
         End Function
 
+        Public Function BeginGameV01(sessionTokenId As String, gameSessionId As String) As Boolean _
+            Implements IWebServiceLobby.BeginGameV01
+
+
+
+        End Function
+
         Public Function CreateGameSessionV01(sessionTokenId As String, gameId As Integer, gameName As String) _
             As String Implements IWebServiceLobby.CreateGameSessionV01
 
@@ -37,7 +44,12 @@ Namespace WebServices
         Public Function GetObjectsV01(sessionTokenId As String, objectType As String) As ObjectData() _
             Implements IWebServiceLobby.GetObjectsV01
 
-
+            Dim userData As UserData = UserManager.Instance.ValidateSessionToken(sessionTokenId)
+            If userData Is Nothing Then
+                Return Nothing
+            Else
+                Return GameManager.Instance.GetUserCustomObjects(userData, objectType)
+            End If
 
         End Function
 

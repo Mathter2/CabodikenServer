@@ -11,6 +11,9 @@ Namespace WebServices
                                objectName As String, objectType As String) As Boolean
 
         <OperationContract()>
+        Function BeginGameV01(sessionTokenId As String, gameSessionId As String) As Boolean
+
+        <OperationContract()>
         Function CreateGameSessionV01(sessionTokenId As String, gameId As Integer, gameName As String) As String
 
         <OperationContract()>
