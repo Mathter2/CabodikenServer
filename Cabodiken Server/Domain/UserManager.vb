@@ -48,14 +48,14 @@ Namespace Domain
         End Sub
 
         Public Function GetFriendsList(sessionTokenId As String) As UserData()
-            Dim friendsList As UserData()
+            Dim friendsList As List(Of UserData)
             Dim userId As Integer
             userId = _users(sessionTokenId).Id
             friendsList = DataManager.Instance.GetFriends(userId)
             For Each user As UserData In friendsList
                 user.IsOnline = _onlineUsers.Contains(user)
             Next
-            Return friendsList
+            Return friendsList.ToArray()
         End Function
 
         Public Function GetUser(sessionTokenId As String) As UserData
