@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="VB" Debug="true" Service="MFierro.Cabodiken.WebServices.WebServiceEditor" CodeBehind="WebServiceEditor.svc.vb" %>
