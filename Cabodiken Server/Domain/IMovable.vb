@@ -5,7 +5,7 @@
 
         Sub SetArea(areaName As String)
 
-        Sub SetLocation(x As Integer, y As Integer, z As Integer)
+        Sub SetLocation(location As Location)
 
     End Interface
 End Namespace

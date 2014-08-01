@@ -3,11 +3,7 @@
 
         Function IsLocked() As Boolean
 
-        Sub Lock()
-
-        Function Switch() As Boolean
-
-        Sub Unlock()
+        Sub SetLock(lockStatus As Boolean)
 
     End Interface
 End Namespace
