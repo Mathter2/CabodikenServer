@@ -91,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="WebServices\WebServiceAuthentication.svc" />
+    <Content Include="WebServices\WebServiceEditor.svc" />
     <Content Include="WebServices\WebServiceGame.svc" />
     <Content Include="WebServices\WebServiceLobby.svc" />
   </ItemGroup>
@@ -116,11 +117,12 @@
     <Compile Include="Domain\Board.vb" />
     <Compile Include="Domain\Box.vb" />
     <Compile Include="Domain\Card.vb" />
-    <Compile Include="Domain\ContainerAction.vb" />
+    <Compile Include="Domain\CardAction.vb" />
     <Compile Include="Domain\Cup.vb" />
     <Compile Include="Domain\CustomAction.vb" />
     <Compile Include="Domain\Deck.vb" />
     <Compile Include="Domain\Dice.vb" />
+    <Compile Include="Domain\EditorManager.vb" />
     <Compile Include="Domain\Game.vb" />
     <Compile Include="Domain\GameManager.vb" />
     <Compile Include="Domain\GameObject.vb" />
@@ -130,7 +132,6 @@
     <Compile Include="Domain\IMovable.vb" />
     <Compile Include="Domain\IRotable.vb" />
     <Compile Include="Domain\Location.vb" />
-    <Compile Include="Domain\SpecialAction.vb" />
     <Compile Include="Domain\Token.vb" />
     <Compile Include="Domain\UserManager.vb" />
     <Compile Include="WebServices\IWebServiceAuthentication.vb" />
@@ -149,10 +150,14 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="WebServices\IWebServiceEditor.vb" />
     <Compile Include="WebServices\IWebServiceGame.vb" />
     <Compile Include="WebServices\IWebServiceLobby.vb" />
     <Compile Include="WebServices\WebServiceAuthentication.svc.vb">
       <DependentUpon>WebServiceAuthentication.svc</DependentUpon>
+    </Compile>
+    <Compile Include="WebServices\WebServiceEditor.svc.vb">
+      <DependentUpon>WebServiceEditor.svc</DependentUpon>
     </Compile>
     <Compile Include="WebServices\WebServiceGame.svc.vb">
       <DependentUpon>WebServiceGame.svc</DependentUpon>
