@@ -45,7 +45,7 @@ Namespace Domain
 
             Dim game As Game = _games(gameSessionId)
 
-            If game.GameSession.Owner.Equals(user) Then
+            If game.GameSession.Players(0).Equals(user) Then
                 game.Start()
                 Return True
             Else
@@ -58,7 +58,7 @@ Namespace Domain
                                           gameName As String) As String
             Dim newGame As Game
             Dim newGameSessionId As String = GenerateGameSessionId(gameName)
-            Dim owner As PlayerData = New PlayerData(ownerData, 0)
+            Dim owner As PlayerData = New PlayerData(ownerData, 0, 1)
 
             newGame = New Game(gameId, gameName, newGameSessionId, owner)
             _games.Add(newGameSessionId, newGame)
@@ -86,11 +86,22 @@ Namespace Domain
 
         End Sub
 
-        Public Sub ExecuteAction(sessionTokenId As String, gameSessionId As String, action As String, parameters As String())
+        Public Function ExecuteAction(user As UserData, gameSessionId As String, action As String, _
+                                      lastIndex As Integer, parameters As String()) As Boolean
 
-        End Sub
+            Dim game As Game = _games(gameSessionId)
 
-        Public Function GetActions(sessionTokenId As String, gameSessionId As String, lastActionIndex As Integer) As ActionData()
+            Return game.ExecuteAction(user, action, lastIndex, parameters)
+
+        End Function
+
+        Public Function GetActions(gameSessionId As String, lastActionIndex As Integer) As List(Of ActionData)
+
+            If _games.ContainsKey(gameSessionId) Then
+                Return _games(gameSessionId).GetActions(lastActionIndex)
+            Else
+                Return Nothing
+            End If
 
         End Function
 
@@ -103,29 +114,8 @@ Namespace Domain
         Public Function GetResources(gameSessionId As String) As ResourceLibrary
 
             Dim gameSession As Game = _games(gameSessionId)
-            Dim decks As List(Of ObjectData) = GetSessionObjects("DECK", gameSession.GameSession)
-            Dim dices As List(Of ObjectData) = GetSessionObjects("DICE", gameSession.GameSession)
-            Dim tokens As List(Of ObjectData) = GetSessionObjects("TOKEN", gameSession.GameSession)
-            Dim boards As List(Of ObjectData) = GetSessionObjects("BOARD", gameSession.GameSession)
-            Dim resources As New ResourceLibrary()
-
-            For Each deck As ObjectData In decks
-                resources.AddDeck(DataManager.Instance.GetDeckData(deck))
-            Next
-
-            For Each dice As ObjectData In dices
-                resources.AddDice(DataManager.Instance.GetDiceData(dice))
-            Next
-
-            For Each token As ObjectData In tokens
-                resources.AddTokens(DataManager.Instance.GetTokenData(token))
-            Next
-
-            For Each board As ObjectData In boards
-                resources.AddBoard(DataManager.Instance.GetBoardData(board))
-            Next
-
-            Return resources
+            
+            Return gameSession.GetResources()
 
         End Function
 
@@ -149,34 +139,6 @@ Namespace Domain
 
             Dim game As Game = _games(gameSessionId)
             Return game.AddUser(user)
-
-        End Function
-
-        Private Function GetSessionObjects(objectType As String, session As GameSessionData) As List(Of ObjectData)
-
-            Dim sessionObjects As New List(Of ObjectData)
-            Dim players As New List(Of PlayerData)
-
-            sessionObjects.AddRange(DataManager.Instance.GetGameObjects(session.Game.Id, objectType))
-            players.Add(session.Owner)
-            players.AddRange(session.Players)
-
-            Select Case objectType
-                Case "DECK"
-                    For Each player As PlayerData In players
-                        sessionObjects.AddRange(player.CustomDecks)
-                    Next
-                Case "DICE"
-                    For Each player As PlayerData In players
-                        sessionObjects.AddRange(player.CustomDices)
-                    Next
-                Case "TOKEN"
-                    For Each player As PlayerData In players
-                        sessionObjects.AddRange(player.CustomTokens)
-                    Next
-            End Select
-
-            Return sessionObjects
 
         End Function
 

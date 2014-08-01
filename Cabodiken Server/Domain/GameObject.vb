@@ -9,6 +9,7 @@
         Private _isLocked As Boolean
         Private _location As Location
         Private _rotation As Integer
+        Private _lastUsedIndex As Integer
 
         Public ReadOnly Property Id As Integer
             Get
@@ -19,6 +20,12 @@
         Public ReadOnly Property ResourceId As Integer
             Get
                 Return _resourceId
+            End Get
+        End Property
+
+        Public ReadOnly Property LastUsedIndex As Integer
+            Get
+                Return _lastUsedIndex
             End Get
         End Property
 
@@ -37,21 +44,19 @@
 
         Public Function IsLocked() As Boolean Implements ILockable.IsLocked
 
-        End Function
-
-        Public Sub Lock() Implements ILockable.Lock
-
-        End Sub
-
-        Public Function Switch() As Boolean Implements ILockable.Switch
+            Return _isLocked
 
         End Function
 
-        Public Sub Unlock() Implements ILockable.Unlock
+        Public Sub SetLock(lockStatus As Boolean) Implements ILockable.SetLock
+
+            _isLocked = lockStatus
 
         End Sub
 
         Public Function GetLocation() As Location Implements IMovable.GetLocation
+
+            Return _location
 
         End Function
 
@@ -59,7 +64,9 @@
 
         End Sub
 
-        Public Sub SetLocation(x As Integer, y As Integer, z As Integer) Implements IMovable.SetLocation
+        Public Sub SetLocation(location As Location) Implements IMovable.SetLocation
+
+            _location = location
 
         End Sub
 
@@ -70,6 +77,17 @@
         Public Sub Rotate(degrees As Integer) Implements IRotable.Rotate
 
         End Sub
+
+        Public Function validateAction(currentIndex As Integer) As Boolean
+
+            If currentIndex > _lastUsedIndex Then
+                _lastUsedIndex = currentIndex
+                Return True
+            Else
+                Return False
+            End If
+
+        End Function
 
         MustOverride Function GetObjectType() As String
 

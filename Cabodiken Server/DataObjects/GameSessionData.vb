@@ -5,7 +5,7 @@
 
         Private _game As ObjectData
         Private _gameSessionId As String
-        Private _owner As PlayerData
+        Private _isGameStarted As Boolean
         Private _players As Dictionary(Of UserData, PlayerData)
 
         <DataMember()>
@@ -29,12 +29,12 @@
         End Property
 
         <DataMember()>
-        Public Property Owner As PlayerData
+        Public Property IsGameStarted As Boolean
             Get
-                Return _owner
+                Return _isGameStarted
             End Get
-            Set(value As PlayerData)
-                _owner = value
+            Set(value As Boolean)
+                _isGameStarted = value
             End Set
         End Property
 
@@ -54,8 +54,9 @@
                        ParamArray players As PlayerData())
             _game = game
             _gameSessionId = gameSessionId
-            _owner = owner
+            _isGameStarted = False
             _players = New Dictionary(Of UserData, PlayerData)
+            AddPlayer(owner)
             For Each player As PlayerData In players
                 AddPlayer(player)
             Next
@@ -71,11 +72,7 @@
 
         Public Function GetPlayer(user As UserData) As PlayerData
 
-            If Owner.Equals(user) Then
-                Return Owner
-            Else
-                Return _players(user)
-            End If
+            Return _players(user)
 
         End Function
 
