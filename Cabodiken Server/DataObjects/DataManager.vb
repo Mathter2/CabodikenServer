@@ -1,14 +1,15 @@
 ﻿Imports System.Data.Common
 Imports MySql.Data.MySqlClient
+Imports System.Data.SqlClient
 
 Namespace DataObjects
     Public Class DataManager
-        Implements IDisposable
 
 #Region "Properties"
 
         Private Shared _instance As DataManager = New DataManager()
-        Private _dbConnection As Data.Common.DbConnection
+        Private _quoteChar As Char
+        Private _databaseType As DatabaseType = DatabaseType.MSSQL
 
         Public Shared ReadOnly Property Instance As DataManager
             Get
@@ -20,11 +21,11 @@ Namespace DataObjects
 #Region "Constructors"
 
         Private Sub New()
-            _dbConnection = New MySqlConnection("server=127.0.0.1;" & _
-                                                "uid=Cabodiken;" & _
-                                                "pwd=cabodiken server;" & _
-                                                "database=cabodiken;")
-            _dbConnection.Open()
+            If _databaseType = DatabaseType.MySQL Then
+                _quoteChar = """"c
+            ElseIf _databaseType = DatabaseType.MSSQL Then
+                _quoteChar = "'"c
+            End If
         End Sub
 
 #End Region
@@ -33,17 +34,31 @@ Namespace DataObjects
 
         Public Sub ModifyUserMessage(userId As Integer, message As String)
             Dim command As DbCommand
-            command = GetDBCommand(GetCommandString("CALL", "modify_user_message", _
+            command = GetDBCommand(GetCommandString(CommandType.SqlProcedure, "modify_user_message", _
                                                     userId.ToString, Quote(message)))
-            command.ExecuteNonQuery()
+
+            command.Connection.Open()
+
+            Try
+                command.ExecuteNonQuery()
+            Finally
+
+                command.Connection.Close()
+                command.Dispose()
+            End Try
+
         End Sub
 
         Public Function GetFriends(userId As Integer) As List(Of UserData)
             Dim friendsList As New List(Of UserData)
-            Dim command As DbCommand = GetDBCommand("CALL get_friends(" & userId & ");")
+            Dim command As DbCommand = GetDBCommand(GetCommandString(CommandType.SqlProcedure, "get_friends", _
+                                                                     userId.ToString))
             Dim dataReader As DbDataReader
+
+            command.Connection.Open()
             dataReader = command.ExecuteReader()
             Try
+                
                 If dataReader.HasRows Then
                     Do While dataReader.Read()
                         Dim id As Integer = dataReader.GetInt32(0)
@@ -55,6 +70,7 @@ Namespace DataObjects
                 End If
             Finally
                 dataReader.Close()
+                command.Connection.Close()
                 command.Dispose()
             End Try
             Return friendsList
@@ -78,7 +94,8 @@ Namespace DataObjects
                     storeProcedure = "get_user_games"
             End Select
 
-            command = GetDBCommand(GetCommandString("CALL", storeProcedure, userId.ToString))
+            command = GetDBCommand(GetCommandString(CommandType.SqlProcedure, storeProcedure, userId.ToString))
+            command.Connection.Open()
             dataReader = command.ExecuteReader()
 
             Try
@@ -91,6 +108,7 @@ Namespace DataObjects
                 End If
             Finally
                 dataReader.Close()
+                command.Connection.Close()
                 command.Dispose()
             End Try
 
@@ -116,7 +134,8 @@ Namespace DataObjects
                     storeProcedure = "get_game_boards"
             End Select
 
-            command = GetDBCommand(GetCommandString("CALL", storeProcedure, gameId.ToString))
+            command = GetDBCommand(GetCommandString(CommandType.SqlProcedure, storeProcedure, gameId.ToString))
+            command.Connection.Open()
             dataReader = command.ExecuteReader()
 
             Try
@@ -129,6 +148,7 @@ Namespace DataObjects
                 End If
             Finally
                 dataReader.Close()
+                command.Connection.Close()
                 command.Dispose()
             End Try
 
@@ -142,7 +162,8 @@ Namespace DataObjects
             Dim dataReader As DbDataReader
             Dim cards As New List(Of CardData)
 
-            command = GetDBCommand(GetCommandString("CALL", "get_deck_data", deck.Id.ToString))
+            command = GetDBCommand(GetCommandString(CommandType.SqlProcedure, "get_deck_data", deck.Id.ToString))
+            command.Connection.Open()
             dataReader = command.ExecuteReader()
 
             Try
@@ -158,6 +179,7 @@ Namespace DataObjects
                 End If
             Finally
                 dataReader.Close()
+                command.Connection.Close()
                 command.Dispose()
             End Try
 
@@ -171,7 +193,8 @@ Namespace DataObjects
             Dim dataReader As DbDataReader
             Dim boardData As BoardData = Nothing
 
-            command = GetDBCommand(GetCommandString("CALL", "get_board_data", board.Id.ToString))
+            command = GetDBCommand(GetCommandString(CommandType.SqlProcedure, "get_board_data", board.Id.ToString))
+            command.Connection.Open()
             dataReader = command.ExecuteReader()
 
             Try
@@ -186,6 +209,7 @@ Namespace DataObjects
                 End If
             Finally
                 dataReader.Close()
+                command.Connection.Close()
                 command.Dispose()
             End Try
 
@@ -199,7 +223,8 @@ Namespace DataObjects
             Dim dataReader As DbDataReader
             Dim sides As New List(Of String)
 
-            command = GetDBCommand(GetCommandString("CALL", "get_dice_data", dice.Id.ToString))
+            command = GetDBCommand(GetCommandString(CommandType.SqlProcedure, "get_dice_data", dice.Id.ToString))
+            command.Connection.Open()
             dataReader = command.ExecuteReader()
 
             Try
@@ -212,6 +237,7 @@ Namespace DataObjects
                 End If
             Finally
                 dataReader.Close()
+                command.Connection.Close()
                 command.Dispose()
             End Try
 
@@ -226,7 +252,8 @@ Namespace DataObjects
             Dim sides As New List(Of List(Of String))
             Dim sidesMatrix As String()()
 
-            command = GetDBCommand(GetCommandString("CALL", "get_deck_data", token.Id.ToString))
+            command = GetDBCommand(GetCommandString(CommandType.SqlProcedure, "get_deck_data", token.Id.ToString))
+            command.Connection.Open()
             dataReader = command.ExecuteReader()
 
             Try
@@ -246,6 +273,7 @@ Namespace DataObjects
                 End If
             Finally
                 dataReader.Close()
+                command.Connection.Close()
                 command.Dispose()
             End Try
 
@@ -266,8 +294,9 @@ Namespace DataObjects
             Dim user As UserData = Nothing
             Dim command As DbCommand
             Dim dataReader As DbDataReader
-            command = GetDBCommand(GetCommandString("CALL", "get_user_by_name", _
+            command = GetDBCommand(GetCommandString(CommandType.SqlProcedure, "get_user_by_name", _
                                                     Quote(username), host.ToString))
+            command.Connection.Open()
             dataReader = command.ExecuteReader()
             Try
                 If dataReader.HasRows Then
@@ -278,6 +307,7 @@ Namespace DataObjects
                 End If
             Finally
                 dataReader.Close()
+                command.Connection.Close()
                 command.Dispose()
             End Try
             Return user
@@ -286,12 +316,14 @@ Namespace DataObjects
         Public Function ValidateUser(username As String, host As Integer, password As String) As UserData
             Dim command As DbCommand
             Dim isValid As Boolean
-            command = GetDBCommand(GetCommandString("SELECT", "validate_user_password", _
+            command = GetDBCommand(GetCommandString(CommandType.SqlFunction, "validate_user_password", _
                                                     Quote(username), host.ToString, Quote(password)))
 
+            command.Connection.Open()
             Try
                 isValid = CType(command.ExecuteScalar(), Boolean)
             Finally
+                command.Connection.Close()
                 command.Dispose()
             End Try
 
@@ -307,11 +339,14 @@ Namespace DataObjects
             Dim command As DbCommand
             Dim wasInserted As Boolean = False
 
-            command = GetDBCommand(GetCommandString("SELECT", "add_user", _
+            command = GetDBCommand(GetCommandString(CommandType.SqlProcedure, "add_user", _
                                                     Quote(userName), host.ToString, Quote(password)))
+
+            command.Connection.Open()
             Try
                 wasInserted = CType(command.ExecuteScalar, Boolean)
             Finally
+                command.Connection.Close()
                 command.Dispose()
             End Try
 
@@ -325,12 +360,14 @@ Namespace DataObjects
             Dim wasAdded As Boolean = False
             Dim friendData As UserData = GetUser(friendName, friendHost)
 
-            command = GetDBCommand(GetCommandString("SELECT", "add_friend", _
+            command = GetDBCommand(GetCommandString(CommandType.SqlProcedure, "add_friend", _
                                                     userId.ToString, friendData.Id.ToString))
 
+            command.Connection.Open()
             Try
                 wasAdded = CType(command.ExecuteScalar, Boolean)
             Finally
+                command.Connection.Close()
                 command.Dispose()
             End Try
 
@@ -338,22 +375,211 @@ Namespace DataObjects
 
         End Function
 
-        Private Function GetDBCommand(command As String) As Data.Common.DbCommand
-            Return New MySqlCommand(command, CType(_dbConnection, MySqlConnection))
+        Public Function AddImage(base64string As String, name As String) As Integer
+
+            Dim command As DbCommand
+            Dim id As Integer
+
+            command = GetDBCommand(GetCommandString(CommandType.SqlProcedure, "add_image", _
+                                                    base64string, name))
+
+            command.Connection.Open()
+            Try
+                id = CType(command.ExecuteScalar, Integer)
+            Finally
+                command.Connection.Close()
+                command.Dispose()
+            End Try
+
+            Return id
+
         End Function
 
-        Private Function GetCommandString(commandPrefix As String, storeProcedureName As String, _
+        Public Function AddCard(name As String, frontImageId As Integer, backImageId As Integer, _
+                                deckId As Integer) As Integer
+
+            Dim command As DbCommand
+            Dim id As Integer
+
+            command = GetDBCommand(GetCommandString(CommandType.SqlProcedure, "add_card", _
+                                                    name, CStr(frontImageId), CStr(backImageId), CStr(deckId)))
+
+            command.Connection.Open()
+            Try
+                id = CType(command.ExecuteScalar, Integer)
+            Finally
+                command.Connection.Close()
+                command.Dispose()
+            End Try
+
+            Return id
+
+        End Function
+
+        Public Function AddDeck(name As String, ownerId As Integer, isPublic As Boolean) As Integer
+
+            Dim command As DbCommand
+            Dim id As Integer
+
+            command = GetDBCommand(GetCommandString(CommandType.SqlProcedure, "add_deck", _
+                                                    name, CStr(ownerId), CStr(CInt(isPublic))))
+
+            command.Connection.Open()
+            Try
+                id = CType(command.ExecuteScalar, Integer)
+            Finally
+                command.Connection.Close()
+                command.Dispose()
+            End Try
+
+            Return id
+
+        End Function
+
+        Public Function DeckExists(name As String) As Boolean
+
+            Dim command As DbCommand
+            Dim exists As Boolean
+
+            command = GetDBCommand(GetCommandString(CommandType.SqlFunction, "deck_exists", name))
+
+            command.Connection.Open()
+            Try
+                exists = CType(command.ExecuteScalar, Boolean)
+            Finally
+                command.Connection.Close()
+                command.Dispose()
+            End Try
+
+            Return exists
+
+        End Function
+
+        Public Function CardExists(name As String, deckId As Integer) As Boolean
+
+            Dim command As DbCommand
+            Dim exists As Boolean
+
+            command = GetDBCommand(GetCommandString(CommandType.SqlFunction, "card_exists", name, CStr(deckId)))
+
+            command.Connection.Open()
+            Try
+                exists = CType(command.ExecuteScalar, Boolean)
+            Finally
+                command.Connection.Close()
+                command.Dispose()
+            End Try
+
+            Return exists
+
+        End Function
+
+        Public Function ImageExists(name As String) As Boolean
+
+            Dim command As DbCommand
+            Dim exists As Boolean
+
+            command = GetDBCommand(GetCommandString(CommandType.SqlFunction, "image_exists", name))
+
+            command.Connection.Open()
+            Try
+                exists = CType(command.ExecuteScalar, Boolean)
+            Finally
+                command.Connection.Close()
+                command.Dispose()
+            End Try
+
+            Return exists
+
+        End Function
+
+        Private Function GetConnection() As DbConnection
+
+            If _databaseType = DatabaseType.MySQL Then
+                Return New MySqlConnection("server=127.0.0.1;" & _
+                                           "uid=Cabodiken;" & _
+                                           "pwd=cabodiken server;" & _
+                                           "database=cabodiken;")
+            Else
+                Return New SqlConnection("Server=MATHTERPC\SQLEXPRESS;" & _
+                                         "Database=Cabodiken;" & _
+                                         "Trusted_Connection=Yes;")
+            End If
+
+
+        End Function
+
+        Private Function GetDBCommand(command As String) As Data.Common.DbCommand
+            If _databaseType = DatabaseType.MySQL Then
+                Return New MySqlCommand(command, CType(GetConnection(), MySqlConnection))
+            Else
+                Return New SqlCommand(command, CType(GetConnection(), SqlConnection))
+            End If
+
+        End Function
+
+        Private Function GetCommandString(commandType As CommandType, storeProcedureName As String, _
                                           ParamArray parameters As String()) As String
-            Dim command As String = commandPrefix & " " & storeProcedureName & "("
+            If _databaseType = DatabaseType.MySQL Then
+                Return GetMySQLCommandString(commandType, storeProcedureName, parameters)
+            Else
+                Return GetMSSQLCommandString(commandType, storeProcedureName, parameters)
+            End If
+        End Function
+
+        Private Function GetMSSQLCommandString(commandType As CommandType, storeProcedureName As String, _
+                                               parameters As String()) As String
+
+            Dim commandPrefix As String
+            Dim command As String
+            Dim lftp As String = "("
+            Dim rgtp As String = ")"
+
+            storeProcedureName = "dbo." & storeProcedureName
+
+            If commandType = DataObjects.CommandType.SqlFunction Then
+                commandPrefix = "SELECT"
+            Else
+                commandPrefix = "EXEC"
+                lftp = " "
+                rgtp = ""
+            End If
+
+            command = commandPrefix & " " & storeProcedureName & lftp
+
             For Each parameter As String In parameters
                 command &= parameter & ", "
             Next
+            command = command.Substring(0, command.Length - 2) & rgtp
+
+            Return command
+
+        End Function
+
+        Private Function GetMySQLCommandString(commandType As CommandType, storeProcedureName As String, _
+                                               parameters As String()) As String
+            Dim commandPrefix As String
+            Dim command As String
+
+            If commandType = DataObjects.CommandType.SqlFunction Then
+                commandPrefix = "CALL"
+            Else
+                commandPrefix = "SELECT"
+            End If
+
+            command = commandPrefix & " " & storeProcedureName & "("
+
+            For Each parameter As String In parameters
+                command &= parameter & ", "
+            Next
+
             command = command.Substring(0, command.Length - 2) & ");"
+
             Return command
         End Function
 
         Private Function Quote(parameter As String) As String
-            Return """" & parameter & """"
+            Return _quoteChar & parameter & _quoteChar
         End Function
 
         Private Function GetNullableString(dataReader As DbDataReader, columnId As Integer) As String
@@ -369,36 +595,20 @@ Namespace DataObjects
 
 #End Region
 
-#Region "IDisposable Support"
-        Private disposedValue As Boolean ' To detect redundant calls
+    End Class
 
-        ' IDisposable
-        Protected Overridable Sub Dispose(disposing As Boolean)
-            If Not Me.disposedValue Then
-                If disposing Then
-                    _dbConnection.Close()
-                End If
+#Region "Enums"
 
-                ' TODO: free unmanaged resources (unmanaged objects) and override Finalize() below.
-                ' TODO: set large fields to null.
-            End If
-            Me.disposedValue = True
-        End Sub
+    Friend Enum DatabaseType
+        MySQL = 1
+        MSSQL = 2
+    End Enum
 
-        ' TODO: override Finalize() only if Dispose(ByVal disposing As Boolean) above has code to free unmanaged resources.
-        'Protected Overrides Sub Finalize()
-        '    ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
-        '    Dispose(False)
-        '    MyBase.Finalize()
-        'End Sub
+    Friend Enum CommandType
+        SqlFunction = 1
+        SqlProcedure = 2
+    End Enum
 
-        ' This code added by Visual Basic to correctly implement the disposable pattern.
-        Public Sub Dispose() Implements IDisposable.Dispose
-            ' Do not change this code.  Put cleanup code in Dispose(disposing As Boolean) above.
-            Dispose(True)
-            GC.SuppressFinalize(Me)
-        End Sub
 #End Region
 
-    End Class
 End Namespace
