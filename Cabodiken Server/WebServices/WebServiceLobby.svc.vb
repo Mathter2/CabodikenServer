@@ -24,7 +24,14 @@ Namespace WebServices
         Public Function BeginGameV01(sessionTokenId As String, gameSessionId As String) As Boolean _
             Implements IWebServiceLobby.BeginGameV01
 
+            Dim userData As UserData = UserManager.Instance.ValidateSessionToken(sessionTokenId)
 
+            If userData Is Nothing Then
+                Return False
+            Else
+                GameManager.Instance.BeginGame(userData, gameSessionId)
+                Return True
+            End If
 
         End Function
 

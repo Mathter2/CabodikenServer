@@ -5,7 +5,7 @@ Namespace WebServices
     Public Class WebServiceGame
         Implements IWebServiceGame
 
-        Public Function ExecuteActionV01(sessionTokenId As String, gameSessionId As String, _
+        Public Function ExecuteActionV01(sessionTokenId As String, gameSessionId As String, lastIndex As Integer, _
                                          actionName As String, actionParameters() As String) As Boolean _
                                          Implements IWebServiceGame.ExecuteActionV01
 
@@ -14,7 +14,8 @@ Namespace WebServices
             If userData Is Nothing Then
                 Return False
             Else
-                Return GameManager.Instance.ExecuteAction(userData, gameSessionId, actionName, actionParameters)
+                Return GameManager.Instance.ExecuteAction(userData, gameSessionId, _
+                                                          actionName, lastIndex, actionParameters)
             End If
 
         End Function
@@ -23,7 +24,13 @@ Namespace WebServices
                                       lastActionIndex As Integer) As DataObjects.ActionData() _
                                       Implements IWebServiceGame.GetActionsV01
 
+            Dim userData As UserData = UserManager.Instance.ValidateSessionToken(sessionTokenId)
 
+            If userData Is Nothing Then
+                Return Nothing
+            Else
+                Return GameManager.Instance.GetActions(gameSessionId, lastActionIndex).ToArray()
+            End If
 
         End Function
 
