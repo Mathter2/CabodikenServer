@@ -2,7 +2,7 @@
     Public Class CustomAction
         Implements IAction
 
-        Public Function ExecuteAction(action As String, ParamArray parameters() As String) As DataObjects.ActionData() Implements IAction.ExecuteAction
+        Public Function ExecuteAction(owner As DataObjects.PlayerData, objectData As GameObject, action As String, parameters() As String) As List(Of DataObjects.ActionData) Implements IAction.ExecuteAction
 
         End Function
     End Class

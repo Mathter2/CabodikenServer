@@ -48,8 +48,7 @@
             End Set
         End Property
 
-        Public Sub New(index As Integer, name As String, owner As UserData, parameters As String())
-            _index = index
+        Public Sub New(name As String, owner As UserData, ParamArray parameters As String())
             _name = name
             _owner = owner
             _parameters = parameters
