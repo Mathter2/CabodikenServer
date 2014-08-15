@@ -46,7 +46,7 @@ Namespace Domain
             Dim game As Game = _games(gameSessionId)
 
             If game.GameSession.Players(0).Equals(user) Then
-                game.Start()
+                game.Start(user)
                 Return True
             Else
                 Return False

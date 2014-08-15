@@ -6,7 +6,6 @@ Namespace Domain
         Private _actionFactory As ActionFactory
         Private _actions As List(Of ActionData)
         Private _gameSession As GameSessionData
-        Private _lastObjectId As Integer
         Private _placedObjects As Dictionary(Of Integer, GameObject)
 
         Public ReadOnly Property GameSession As GameSessionData
@@ -16,12 +15,13 @@ Namespace Domain
         End Property
 
         Public Sub New(gameId As Integer, gameName As String, gameSessionId As String, owner As PlayerData)
+
             Dim gameData As New ObjectData(gameId, gameName, "GAME")
             _gameSession = New GameSessionData(gameData, gameSessionId, owner)
             _actionFactory = New ActionFactory
             _actions = New List(Of ActionData)
-            _lastObjectId = 0
             _placedObjects = New Dictionary(Of Integer, GameObject)
+
         End Sub
 
         Public Sub AddCustomObject(customObject As ObjectData, objectType As String)
@@ -131,7 +131,22 @@ Namespace Domain
 
         End Function
 
-        Public Sub Start()
+        Public Sub Start(owner As UserData)
+
+            Dim placedDecks As List(Of Deck) = DataManager.Instance.GetPlacedDecks(_placedObjects.Count, _gameSession.Game.Id)
+
+            For Each deck As Deck In placedDecks
+
+                Dim action As New ActionData("CREATE_DECK", owner, CStr(deck.Id), _
+                                             CStr(deck.ResourceId), CStr(deck.GetRotation), _
+                                             CStr(deck.GetLocation.GetCoordinates), CStr(deck.IsLocked), _
+                                             CStr(deck.IsFaceDown), GetArrayString(deck.GetCards))
+
+                _actions.Add(action)
+
+                _placedObjects.Add(deck.Id, deck)
+
+            Next
 
             _gameSession.IsGameStarted = True
 
@@ -161,6 +176,13 @@ Namespace Domain
             End Select
 
             Return sessionObjects
+
+        End Function
+
+        Private Function GetArrayString(array As Integer()) As String
+
+            Dim arrayString As String() = array.Select(Function(x) x.ToString()).ToArray
+            Return Join(arrayString, ";")
 
         End Function
 
