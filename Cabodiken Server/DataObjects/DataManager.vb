@@ -493,6 +493,77 @@ Namespace DataObjects
 
         End Function
 
+        Public Function GetPlacedDecks(newObjectId As Integer, gameId As Integer) As List(Of Deck)
+
+            Dim command As DbCommand
+            Dim decks As New List(Of Deck)
+            Dim dataReader As DbDataReader
+
+            command = GetDBCommand(GetCommandString(CommandType.SqlProcedure, "get_placed_decks", CStr(gameId)))
+
+            command.Connection.Open()
+            dataReader = command.ExecuteReader()
+            Try
+                If dataReader.HasRows Then
+                    Do While dataReader.Read()
+                        Dim deck As Deck
+                        Dim deckId As Integer = dataReader.GetInt32(2)
+                        Dim name As String = dataReader.GetString(4)
+                        Dim isLocked As Boolean = dataReader.GetBoolean(5)
+                        Dim addsFromTop As Boolean = dataReader.GetBoolean(6)
+                        Dim removesFromTop As Boolean = dataReader.GetBoolean(7)
+                        Dim isFaceDown As Boolean = dataReader.GetBoolean(8)
+                        Dim x As Integer = dataReader.GetInt32(9)
+                        Dim y As Integer = dataReader.GetInt32(10)
+                        Dim z As Integer = dataReader.GetInt32(11)
+                        Dim rotation As Integer = dataReader.GetInt32(12)
+
+                        deck = New Deck(newObjectId, deckId, addsFromTop, removesFromTop)
+                        deck.SetLock(isLocked)
+                        deck.IsFaceDown = isFaceDown
+                        deck.SetLocation(New Location(x, y, z, Area.Table))
+                        deck.AddDeck(GetDeckCards(deckId))
+
+                        decks.Add(deck)
+                    Loop
+                End If
+            Finally
+                command.Connection.Close()
+                command.Dispose()
+            End Try
+
+            Return decks
+
+        End Function
+
+        Public Function GetDeckCards(deckId As Integer) As Integer()
+
+            Dim command As DbCommand
+            Dim cards As New List(Of Integer)
+            Dim dataReader As DbDataReader
+
+            command = GetDBCommand(GetCommandString(CommandType.SqlProcedure, "get_deck_cards", CStr(deckId)))
+
+            command.Connection.Open()
+            dataReader = command.ExecuteReader()
+            Try
+                If dataReader.HasRows Then
+                    Do While dataReader.Read()
+
+                        Dim cardId As Integer = dataReader.GetInt32(0)
+                        cards.Add(cardId)
+
+                    Loop
+                End If
+            Finally
+                command.Connection.Close()
+                command.Dispose()
+            End Try
+
+            Return cards.ToArray()
+
+        End Function
+
         Private Function GetConnection() As DbConnection
 
             If _databaseType = DatabaseType.MySQL Then
