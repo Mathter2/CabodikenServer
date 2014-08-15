@@ -149,6 +149,10 @@
 
         End Sub
 
+        Public Function GetUserData() As UserData
+            Return New UserData(Id, Name, Host, Message, IsOnline)
+        End Function
+
     End Class
 
 End Namespace

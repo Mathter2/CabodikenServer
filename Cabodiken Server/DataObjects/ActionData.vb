@@ -31,6 +31,9 @@
         <DataMember()>
         Public Property Owner As UserData
             Get
+                If _owner.GetType = GetType(PlayerData) Then
+                    Throw New Exception("placed player data in user data again...")
+                End If
                 Return _owner
             End Get
             Set(value As UserData)
@@ -49,9 +52,15 @@
         End Property
 
         Public Sub New(name As String, owner As UserData, ParamArray parameters As String())
+
+            If owner.GetType() = GetType(PlayerData) Then
+                owner = CType(owner, PlayerData).GetUserData()
+            End If
+
             _name = name
             _owner = owner
             _parameters = parameters
+
         End Sub
 
     End Class
