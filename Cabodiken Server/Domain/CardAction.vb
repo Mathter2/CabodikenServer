@@ -44,7 +44,7 @@ Namespace Domain
                 card.SetLocation(location)
                 actionList.Add(New ActionData("REMOVE", owner, cardId))
                 actionList.Add(New ActionData("CREATE_CARD", owner, card.Id.ToString, card.ResourceId.ToString, _
-                                              card.GerRotation.ToString, card.GetLocation().GetCoordinates, _
+                                              card.GetRotation.ToString, card.GetLocation().GetCoordinates, _
                                               area.ToString, "False", card.IsFaceUp.ToString))
             End If
 

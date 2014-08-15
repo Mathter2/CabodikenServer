@@ -6,6 +6,8 @@
             Select Case objectType
                 Case "CARD"
                     Return New CardAction()
+                Case "DECK"
+                    Return New DeckAction()
                 Case Else
                     Return New CustomAction()
             End Select

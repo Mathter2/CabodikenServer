@@ -1,4 +1,6 @@
-﻿Namespace Domain
+﻿Imports MFierro.Cabodiken.DataObjects
+
+Namespace Domain
     Public Class CustomAction
         Implements IAction
 
