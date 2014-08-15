@@ -1,9 +1,9 @@
-﻿Namespace Domain
-    Public Class Card
+﻿Namespace DataObjects
+    Public Class Glass
         Inherits GameObject
 
-        Private Const _TYPE As String = "CARD"
-        Private _isFaceUp As Boolean
+        Private Const _TYPE As String = "GLASS"
+        Private _dices As Integer()
 
         Public Sub New(id As Integer, resourceId As Integer)
             MyBase.New(id, resourceId)
@@ -13,13 +13,13 @@
             Return _TYPE
         End Function
 
-        Public Function IsFaceUp() As Boolean
-
-        End Function
-
-        Public Sub SetFace(isUp As Boolean)
+        Public Sub AddDice(resourceId As Integer)
 
         End Sub
+
+        Public Function GetDices() As Integer()
+
+        End Function
 
     End Class
 End Namespace

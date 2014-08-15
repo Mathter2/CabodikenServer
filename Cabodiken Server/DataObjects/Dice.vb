@@ -1,4 +1,4 @@
-﻿Namespace Domain
+﻿Namespace DataObjects
     Public Class Dice
         Inherits GameObject
 

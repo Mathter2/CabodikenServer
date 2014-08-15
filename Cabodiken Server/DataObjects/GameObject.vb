@@ -1,4 +1,4 @@
-﻿Namespace Domain
+﻿Namespace DataObjects
     Public MustInherit Class GameObject
         Implements IMovable, IRotable, ILockable
 
@@ -70,7 +70,7 @@
 
         End Sub
 
-        Public Function GerRotation() As Integer Implements IRotable.GerRotation
+        Public Function GetRotation() As Integer Implements IRotable.GetRotation
 
         End Function
 

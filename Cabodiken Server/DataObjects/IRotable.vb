@@ -1,7 +1,7 @@
-﻿Namespace Domain
+﻿Namespace DataObjects
     Public Interface IRotable
 
-        Function GerRotation() As Integer
+        Function GetRotation() As Integer
 
         Sub Rotate(degrees As Integer)
 

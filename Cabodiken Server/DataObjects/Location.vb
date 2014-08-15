@@ -1,6 +1,4 @@
-﻿Imports MFierro.Cabodiken.DataObjects
-
-Namespace Domain
+﻿Namespace DataObjects
     Public Class Location
 
         Private _area As Area
@@ -52,7 +50,7 @@ Namespace Domain
 
         Public Function GetCoordinates() As String
 
-            Return _x & "," & _y & "," & _z
+            Return _x & "," & _y & "," & _z & "," & _area
 
         End Function
 

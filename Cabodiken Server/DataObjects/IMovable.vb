@@ -1,4 +1,4 @@
-﻿Namespace Domain
+﻿Namespace DataObjects
     Public Interface IMovable
 
         Function GetLocation() As Location
