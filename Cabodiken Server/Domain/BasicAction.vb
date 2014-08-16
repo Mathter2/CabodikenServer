@@ -4,7 +4,7 @@ Namespace Domain
     Public Class BasicAction
         Implements IAction
 
-        Public Function ExecuteAction(owner As PlayerData, gameObject As GameObject, action As String, _
+        Public Function ExecuteAction(game As Game, owner As PlayerData, gameObject As GameObject, action As String, _
                                       parameters() As String) As List(Of ActionData) _
             Implements IAction.ExecuteAction
 

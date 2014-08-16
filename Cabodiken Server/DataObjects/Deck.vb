@@ -62,6 +62,18 @@
 
         Public Function Draw() As Integer
 
+            Dim DrawBottomCard As Boolean = _removesFromTop Xor IsFaceDown
+            Dim DrawnCard As Integer
+
+            If DrawBottomCard Then
+                DrawnCard = _cards.First
+            Else
+                DrawnCard = _cards.Last
+            End If
+
+            _cards.Remove(DrawnCard)
+            Return DrawnCard
+
         End Function
 
         Public Function GetCards() As Integer()

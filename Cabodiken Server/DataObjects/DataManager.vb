@@ -493,7 +493,7 @@ Namespace DataObjects
 
         End Function
 
-        Public Function GetPlacedDecks(newObjectId As Integer, gameId As Integer) As List(Of Deck)
+        Public Function GetPlacedDecks(gameId As Integer) As List(Of Deck)
 
             Dim command As DbCommand
             Dim decks As New List(Of Deck)
@@ -518,7 +518,7 @@ Namespace DataObjects
                         Dim z As Integer = dataReader.GetInt32(11)
                         Dim rotation As Integer = dataReader.GetInt32(12)
 
-                        deck = New Deck(newObjectId, deckId, addsFromTop, removesFromTop)
+                        deck = New Deck(0, deckId, addsFromTop, removesFromTop)
                         deck.SetLock(isLocked)
                         deck.IsFaceDown = isFaceDown
                         deck.SetLocation(New Location(x, y, z, Area.Table))

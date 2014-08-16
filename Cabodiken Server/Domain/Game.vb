@@ -78,7 +78,7 @@ Namespace Domain
 
             action = _actionFactory.GetAction(gameObject.GetObjectType())
 
-            actions = action.ExecuteAction(player, gameObject, actionName, parameters)
+            actions = action.ExecuteAction(Me, player, gameObject, actionName, parameters)
 
             If actions.Count = 0 Then
                 Return False
@@ -133,7 +133,8 @@ Namespace Domain
 
         Public Sub Start(owner As UserData)
 
-            Dim placedDecks As List(Of Deck) = DataManager.Instance.GetPlacedDecks(_placedObjects.Count, _gameSession.Game.Id)
+            'THIS IS WRONG! _PacedObjects.count should change
+            Dim placedDecks As List(Of Deck) = DataManager.Instance.GetPlacedDecks(_gameSession.Game.Id)
 
             For Each deck As Deck In placedDecks
 
@@ -144,13 +145,23 @@ Namespace Domain
 
                 _actions.Add(action)
 
-                _placedObjects.Add(deck.Id, deck)
+                AddGameObject(deck)
+                '_placedObjects.Add(deck.Id, deck)
 
             Next
 
             _gameSession.IsGameStarted = True
 
         End Sub
+
+        Public Function AddGameObject(gameObject As GameObject) As GameObject
+
+            Dim PlacedObjectIndex As Integer = _placedObjects.Count
+            gameObject.Id = PlacedObjectIndex
+            _placedObjects.Add(PlacedObjectIndex, gameObject)
+            Return _placedObjects(PlacedObjectIndex)
+
+        End Function
 
         Private Function GetSessionObjects(objectType As String, session As GameSessionData) As List(Of ObjectData)
 

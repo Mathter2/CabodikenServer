@@ -3,21 +3,21 @@
         Inherits GameObject
 
         Private Const _TYPE As String = "CARD"
-        Private _isFaceUp As Boolean
+        Private _isFaceDown As Boolean
 
-        Public Property IsFaceUp() As Boolean
+        Public Property IsFaceDown() As Boolean
             Get
-                Return _isFaceUp
+                Return _isFaceDown
             End Get
             Set(ByVal value As Boolean)
-                _isFaceUp = value
+                _isFaceDown = value
             End Set
         End Property
 
 
-        Public Sub New(id As Integer, resourceId As Integer, isFaceUp As Boolean)
+        Public Sub New(id As Integer, resourceId As Integer, isFaceDown As Boolean)
             MyBase.New(id, resourceId)
-            _isFaceUp = isFaceUp
+            _isFaceDown = IsFaceDown
         End Sub
 
         Public Overrides Function GetObjectType() As String

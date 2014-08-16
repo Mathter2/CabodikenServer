@@ -4,28 +4,28 @@ Namespace Domain
     Public Class DeckAction
         Implements IAction
 
-        Public Function ExecuteAction(owner As DataObjects.PlayerData, objectData As GameObject, action As String, _
+        Public Function ExecuteAction(game As Game, owner As DataObjects.PlayerData, objectData As GameObject, action As String, _
                                       parameters() As String) As List(Of ActionData) Implements IAction.ExecuteAction
 
             Dim deck As Deck = CType(objectData, Deck)
 
             Select Case action.ToUpper
                 Case "MOVE"
-                    If parameters.Count = 3 Then
-                        Return ExecuteMove(owner, deck, parameters)
-                    Else
-                        Return ExecuteAreaMove(owner, deck, parameters)
-                    End If
+                    Return ExecuteMove(owner, deck, parameters)
+                Case "AREA_MOVE"
+                    Return ExecuteAreaMove(owner, deck, parameters)
                 Case "ROTATE"
                     Return ExecuteRotate(owner, deck, parameters)
                 Case "LOCK"
                     Return ExecuteLock(owner, deck, parameters)
                 Case "FLIP"
-
+                    Return ExecuteFlip(owner, deck, parameters)
                 Case "AGGREGATE"
 
                 Case "SHUFFLE"
                     Return ExecuteShuffle(owner, deck, parameters)
+                Case "DRAW"
+                    Return ExecuteDraw(game, owner, deck, parameters)
                 Case Else
                     Return Nothing
             End Select
@@ -116,5 +116,43 @@ Namespace Domain
 
         End Function
 
+        Private Function ExecuteFlip(owner As PlayerData, deck As Deck, parameters As String()) _
+                                     As List(Of ActionData)
+
+            Dim actionList As New List(Of ActionData)
+            Dim deckId As String = deck.Id.ToString
+            Dim isFaceDown As Boolean = CType(parameters(1), Boolean)
+            If deck.GetLocation.Area = Area.Table Or owner.IsPlayerArea(deck.GetLocation.Area) Then
+                deck.IsFaceDown = isFaceDown
+                actionList.Add(New ActionData("FLIP", owner, deckId, deck.IsFaceDown.ToString))
+            End If
+            Return actionList
+
+        End Function
+
+        Private Function ExecuteDraw(game As Game, owner As PlayerData, deck As Deck, parameters As String()) _
+                                     As List(Of ActionData)
+
+            Dim actionList As New List(Of ActionData)
+            Dim deckId As String = deck.Id.ToString
+            Dim x As Integer = CType(parameters(1), Integer)
+            Dim y As Integer = CType(parameters(2), Integer)
+
+            If deck.GetLocation.Area = Area.Table Or owner.IsPlayerArea(deck.GetLocation.Area) Then
+                Dim newCardResourceId As Integer = deck.Draw()
+                Dim card As Card = New Card(0, newCardResourceId, deck.IsFaceDown)
+                card.IsFaceDown = deck.IsFaceDown
+                card.Rotate(deck.GetRotation)
+                card.SetLocation(New Location(x, y, 0, Area.Table)) 'AREA IS HARDCODED
+                card = CType(game.AddGameObject(card), Card)
+                actionList.Add(New ActionData("REORDER", owner, deckId, deck.getCardsString))
+                actionList.Add(New ActionData("CREATE_CARD", owner, CStr(card.Id), CStr(card.ResourceId), _
+                                              CStr(card.GetRotation), CStr(card.GetLocation.GetCoordinates), _
+                                              CStr(card.IsLocked), CStr(card.IsFaceDown)))
+            End If
+
+            Return actionList
+
+        End Function
     End Class
 End Namespace

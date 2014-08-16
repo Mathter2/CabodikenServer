@@ -6,15 +6,18 @@
 
         Private _id As Integer
         Private _resourceId As Integer
-        Private _isLocked As Boolean
+        Private _isLocked As Boolean = False
         Private _location As Location
         Private _rotation As Integer
         Private _lastUsedIndex As Integer
 
-        Public ReadOnly Property Id As Integer
+        Public Property Id As Integer
             Get
                 Return _id
             End Get
+            Set(value As Integer)
+                _id = value
+            End Set
         End Property
 
         Public ReadOnly Property ResourceId As Integer
