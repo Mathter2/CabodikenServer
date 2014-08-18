@@ -1,4 +1,4 @@
-﻿Namespace DataObjects
+﻿Namespace DomainObjects
     Public Enum Area
         Table = 0
         Player1Hand = 1

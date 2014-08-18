@@ -1,6 +1,7 @@
 ﻿Imports System.Data.Common
 Imports MySql.Data.MySqlClient
 Imports System.Data.SqlClient
+Imports MFierro.Cabodiken.DomainObjects
 
 Namespace DataObjects
     Public Class DataManager

@@ -1,4 +1,4 @@
-﻿Namespace DataObjects
+﻿Namespace DomainObjects
     Public Class Location
 
         Private _area As Area

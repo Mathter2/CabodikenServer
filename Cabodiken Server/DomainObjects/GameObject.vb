@@ -1,4 +1,4 @@
-﻿Namespace DataObjects
+﻿Namespace DomainObjects
     Public MustInherit Class GameObject
         Implements IMovable, IRotable, ILockable
 

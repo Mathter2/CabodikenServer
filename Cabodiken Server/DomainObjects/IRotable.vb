@@ -1,4 +1,4 @@
-﻿Namespace DataObjects
+﻿Namespace DomainObjects
     Public Interface IRotable
 
         Function GetRotation() As Integer

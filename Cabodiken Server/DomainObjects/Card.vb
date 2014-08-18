@@ -1,4 +1,4 @@
-﻿Namespace DataObjects
+﻿Namespace DomainObjects
     Public Class Card
         Inherits GameObject
 
@@ -17,7 +17,7 @@
 
         Public Sub New(id As Integer, resourceId As Integer, isFaceDown As Boolean)
             MyBase.New(id, resourceId)
-            _isFaceDown = IsFaceDown
+            _isFaceDown = isFaceDown
         End Sub
 
         Public Overrides Function GetObjectType() As String

@@ -1,4 +1,5 @@
 ﻿Imports MFierro.Cabodiken.DataObjects
+Imports MFierro.Cabodiken.DomainObjects
 
 Namespace Domain
     Public Class BasicAction
@@ -31,10 +32,10 @@ Namespace Domain
             Dim actionList As New List(Of ActionData)
             Dim objectId As String = parameters(0)
             Dim location As Location = GetLocation(parameters(1))
-            Dim area As Area = CType(parameters(2), Area)
+            Dim moveArea As Area = CType(parameters(2), Area)
 
-            If owner.IsPlayerArea(area) OrElse area = DataObjects.Area.Table OrElse _
-                gameObject.GetLocation.Area = area.Table OrElse owner.IsPlayerArea(gameObject.GetLocation.Area) Then
+            If owner.IsPlayerArea(moveArea) OrElse moveArea = Area.Table OrElse _
+                gameObject.GetLocation.Area = Area.Table OrElse owner.IsPlayerArea(gameObject.GetLocation.Area) Then
 
                 gameObject.SetLocation(location)
                 actionList.Add(New ActionData("REMOVE", owner, objectId))

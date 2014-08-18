@@ -1,4 +1,5 @@
 ﻿Imports MFierro.Cabodiken.DataObjects
+Imports MFierro.Cabodiken.DomainObjects
 
 Namespace Domain
     Public Class DeckAction

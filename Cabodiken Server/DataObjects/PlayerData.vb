@@ -1,4 +1,6 @@
-﻿Namespace DataObjects
+﻿Imports MFierro.Cabodiken.DomainObjects
+
+Namespace DataObjects
 
     <DataContract()>
     Public Class PlayerData
@@ -112,24 +114,24 @@
 
         End Sub
 
-        Public Function IsPlayerArea(area As Area) As Boolean
+        Public Function IsPlayerArea(playerArea As Area) As Boolean
 
-            Select Case area
-                Case DataObjects.Area.Player1Area, DataObjects.Area.Player1Hand
+            Select Case playerArea
+                Case Area.Player1Area, Area.Player1Hand
                     Return Number = 1
-                Case DataObjects.Area.Player2Area, DataObjects.Area.Player2Hand
+                Case Area.Player2Area, Area.Player2Hand
                     Return Number = 2
-                Case DataObjects.Area.Player3Area, DataObjects.Area.Player3Hand
+                Case Area.Player3Area, Area.Player3Hand
                     Return Number = 3
-                Case DataObjects.Area.Player4Area, DataObjects.Area.Player4Hand
+                Case Area.Player4Area, Area.Player4Hand
                     Return Number = 4
-                Case DataObjects.Area.Player5Area, DataObjects.Area.Player5Hand
+                Case Area.Player5Area, Area.Player5Hand
                     Return Number = 5
-                Case DataObjects.Area.Player6Area, DataObjects.Area.Player6Hand
+                Case Area.Player6Area, Area.Player6Hand
                     Return Number = 6
-                Case DataObjects.Area.Player7Area, DataObjects.Area.Player7Hand
+                Case Area.Player7Area, Area.Player7Hand
                     Return Number = 7
-                Case DataObjects.Area.Player8Area, DataObjects.Area.Player8Hand
+                Case Area.Player8Area, Area.Player8Hand
                     Return Number = 8
                 Case Else
                     Return False

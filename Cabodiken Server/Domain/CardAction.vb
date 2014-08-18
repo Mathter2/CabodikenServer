@@ -1,4 +1,5 @@
 ﻿Imports MFierro.Cabodiken.DataObjects
+Imports MFierro.Cabodiken.DomainObjects
 
 Namespace Domain
     Public Class CardAction
@@ -51,16 +52,16 @@ Namespace Domain
             Dim actionList As New List(Of ActionData)
             Dim cardId As String = card.Id.ToString
             Dim location As New Location(parameters(1))
-            Dim area As Area = CType(parameters(2), Area)
+            Dim moveArea As Area = CType(parameters(2), Area)
 
-            If owner.IsPlayerArea(area) OrElse area = DataObjects.Area.Table OrElse _
-                card.GetLocation.Area = area.Table OrElse owner.IsPlayerArea(card.GetLocation.Area) Then
+            If owner.IsPlayerArea(moveArea) OrElse moveArea = Area.Table OrElse _
+                card.GetLocation.Area = Area.Table OrElse owner.IsPlayerArea(card.GetLocation.Area) Then
 
                 card.SetLocation(location)
                 actionList.Add(New ActionData("REMOVE", owner, cardId))
                 actionList.Add(New ActionData("CREATE_CARD", owner, card.Id.ToString, card.ResourceId.ToString, _
                                               card.GetRotation.ToString, card.GetLocation().GetCoordinates, _
-                                              area.ToString, "False", card.IsFaceDown.ToString))
+                                              moveArea.ToString, "False", card.IsFaceDown.ToString))
             End If
 
             Return actionList

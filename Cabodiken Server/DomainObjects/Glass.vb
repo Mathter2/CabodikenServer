@@ -1,9 +1,9 @@
-﻿Namespace DataObjects
-    Public Class Cup
+﻿Namespace DomainObjects
+    Public Class Glass
         Inherits GameObject
 
-        Private Const _TYPE As String = "CUP"
-        Private _tokens As Integer()
+        Private Const _TYPE As String = "GLASS"
+        Private _dices As Integer()
 
         Public Sub New(id As Integer, resourceId As Integer)
             MyBase.New(id, resourceId)
@@ -13,17 +13,13 @@
             Return _TYPE
         End Function
 
-        Public Sub AddToken(resourceId As Integer)
+        Public Sub AddDice(resourceId As Integer)
 
         End Sub
 
-        Public Function GetToken() As Integer
+        Public Function GetDices() As Integer()
 
         End Function
-
-        Private Sub Shuffle()
-
-        End Sub
 
     End Class
 End Namespace

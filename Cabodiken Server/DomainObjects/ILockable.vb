@@ -1,4 +1,4 @@
-﻿Namespace DataObjects
+﻿Namespace DomainObjects
     Public Interface ILockable
 
         Function IsLocked() As Boolean
