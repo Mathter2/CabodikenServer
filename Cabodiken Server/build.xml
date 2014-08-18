@@ -20,7 +20,7 @@
         description="copy the files" >
     <!-- Copy WebServices folder -->
     <copy todir="${local}">
-      <fileset dir="${ws}"/>
+      <fileset dir="${ws}" include="*.svc"/>
     </copy>
 
     <!-- Copy bin folder -->
@@ -29,9 +29,7 @@
     </copy>
 
     <!-- Copy Web.config folder -->
-    <copy todir="${local}">
-      <fileset dir="${web_config}"/>
-    </copy>
+    <copy file="${web_config}" todir="${local}"/>
 
   </target>
 
