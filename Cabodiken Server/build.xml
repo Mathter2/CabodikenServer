@@ -1,0 +1,12 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Compile Include="MFierro.Cabodiken.*" />
+  </ItemGroup>
+  <PropertyGroup>
+    <AssemblyName>CabodikenServer</AssemblyName>
+    <OutputPath>Bin\</OutputPath>
+  </PropertyGroup>
+  <Target Name="Build">
+    <Vbc Sources="@(Compile)" />
+  </Target>
+</Project>
