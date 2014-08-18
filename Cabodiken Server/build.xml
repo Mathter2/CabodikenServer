@@ -19,14 +19,14 @@
   <target name="dist" depends="init"
         description="copy the files" >
     <!-- Copy WebServices folder -->
-    <copy todir="${local}">
+    <copy todir="${local}\WebServices">
       <fileset dir="${ws}" >
         <include name="*.svc" />
       </fileset>
     </copy>
 
     <!-- Copy bin folder -->
-    <copy todir="${local}">
+    <copy todir="${local}\bin">
       <fileset dir="${bin}"/>
     </copy>
 
