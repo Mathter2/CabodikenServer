@@ -1,12 +1,38 @@
-﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ItemGroup>
-    <Compile Include="MFierro.Cabodiken.*" />
-  </ItemGroup>
-  <PropertyGroup>
-    <AssemblyName>CabodikenServer</AssemblyName>
-    <OutputPath>Bin\</OutputPath>
-  </PropertyGroup>
-  <Target Name="Build">
-    <Vbc Sources="@(Compile)" />
-  </Target>
-</Project>
+﻿<project name="CabodikenServer" default="dist" basedir=".">
+  <description>
+    simple example build file
+  </description>
+  <!-- set global properties for this build -->
+  <property name="ws" location="WebServices" />
+  <property name="bin" location="bin" />
+  <property name="web_config" location="Web.config" />
+  <property name="local"  location="C:\inetpub\cabodiken_server" />
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <delete includeemptydirs="true">
+      <fileset dir="${local}" includes="**/*"/>
+    </delete>
+  </target>
+
+  <target name="dist" depends="init"
+        description="copy the files" >
+    <!-- Copy WebServices folder -->
+    <copy todir="${local}">
+      <fileset dir="${ws}"/>
+    </copy>
+
+    <!-- Copy bin folder -->
+    <copy todir="${local}">
+      <fileset dir="${bin}"/>
+    </copy>
+
+    <!-- Copy Web.config folder -->
+    <copy todir="${local}">
+      <fileset dir="${web_config}"/>
+    </copy>
+
+  </target>
+
+</project>
