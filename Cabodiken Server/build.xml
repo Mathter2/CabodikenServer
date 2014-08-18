@@ -20,7 +20,9 @@
         description="copy the files" >
     <!-- Copy WebServices folder -->
     <copy todir="${local}">
-      <fileset dir="${ws}" include="*.svc"/>
+      <fileset dir="${ws}" >
+        <include name="*.svc" />
+      </fileset>
     </copy>
 
     <!-- Copy bin folder -->
