@@ -84,13 +84,18 @@
         Public Function validateAction(currentIndex As Integer) As Boolean
 
             If currentIndex > _lastUsedIndex Then
-                _lastUsedIndex = currentIndex
                 Return True
             Else
                 Return False
             End If
 
         End Function
+
+        Public Sub updateActionIndex(currentIndex As Integer)
+
+            _lastUsedIndex = currentIndex
+
+        End Sub
 
         MustOverride Function GetObjectType() As String
 

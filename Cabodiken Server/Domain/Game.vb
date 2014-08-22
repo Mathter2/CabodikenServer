@@ -32,7 +32,7 @@ Namespace Domain
         Public Function AddUser(user As UserData) As Boolean
 
             Dim playerPosition As Integer
-            Dim playerNumber As Integer = _gameSession.Players.Count + 2
+            Dim playerNumber As Integer = _gameSession.Players.Count + 1
             If playerNumber > 8 Then
                 Return False
             Else
@@ -84,6 +84,7 @@ Namespace Domain
             If actions.Count = 0 Then
                 Return False
             Else
+                gameObject.updateActionIndex(knownIndex)
                 _actions.AddRange(actions)
                 Return True
             End If
@@ -134,20 +135,18 @@ Namespace Domain
 
         Public Sub Start(owner As UserData)
 
-            'THIS IS WRONG! _PacedObjects.count should change
             Dim placedDecks As List(Of Deck) = DataManager.Instance.GetPlacedDecks(_gameSession.Game.Id)
 
             For Each deck As Deck In placedDecks
 
                 Dim action As New ActionData("CREATE_DECK", owner, CStr(deck.Id), _
                                              CStr(deck.ResourceId), CStr(deck.GetRotation), _
-                                             CStr(deck.GetLocation.GetCoordinates), CStr(deck.IsLocked), _
+                                             CStr(deck.GetLocation.GetCoordinates), CStr(0), CStr(deck.IsLocked), _
                                              CStr(deck.IsFaceDown), GetArrayString(deck.GetCards))
 
                 _actions.Add(action)
 
                 AddGameObject(deck)
-                '_placedObjects.Add(deck.Id, deck)
 
             Next
 
@@ -163,6 +162,18 @@ Namespace Domain
             Return _placedObjects(PlacedObjectIndex)
 
         End Function
+
+        Public Function GetGameObject(gameObjectId As Integer) As GameObject
+
+            Return _placedObjects(gameObjectId)
+
+        End Function
+
+        Public Sub RemoveGameObject(gameObjectId As Integer)
+
+            _placedObjects.Remove(gameObjectId)
+
+        End Sub
 
         Private Function GetSessionObjects(objectType As String, session As GameSessionData) As List(Of ObjectData)
 
