@@ -22,7 +22,7 @@ Namespace Domain
                 Case "FLIP"
                     Return ExecuteFlip(owner, card, parameters)
                 Case "AGGREGATE"
-
+                    Return ExecuteAggregate(game, owner, card, parameters)
                 Case Else
                     Return Nothing
             End Select
@@ -51,17 +51,19 @@ Namespace Domain
 
             Dim actionList As New List(Of ActionData)
             Dim cardId As String = card.Id.ToString
-            Dim location As New Location(parameters(1))
-            Dim moveArea As Area = CType(parameters(2), Area)
+            Dim moveArea As Area = CType(parameters(3), Area)
+            Dim location As Location = New Location(CInt(parameters(1)), CInt(parameters(2)),
+                                                    1, moveArea)
+            Dim isFaceDown As Boolean = False
 
             If owner.IsPlayerArea(moveArea) OrElse moveArea = Area.Table OrElse _
-                card.GetLocation.Area = Area.Table OrElse owner.IsPlayerArea(card.GetLocation.Area) Then
+                    card.GetLocation.Area = Area.Table OrElse owner.IsPlayerArea(card.GetLocation.Area) Then
 
                 card.SetLocation(location)
                 actionList.Add(New ActionData("REMOVE", owner, cardId))
-                actionList.Add(New ActionData("CREATE_CARD", owner, card.Id.ToString, card.ResourceId.ToString, _
-                                              card.GetRotation.ToString, card.GetLocation().GetCoordinates, _
-                                              moveArea.ToString, "False", card.IsFaceDown.ToString))
+                actionList.Add(New ActionData("CREATE_CARD", owner, cardId, CStr(card.ResourceId), _
+                                              CStr(card.GetRotation), CStr(card.GetLocation.GetCoordinates), _
+                                              CStr(card.IsLocked), CStr(isFaceDown)))
             End If
 
             Return actionList
@@ -93,7 +95,7 @@ Namespace Domain
 
             If card.GetLocation.Area = Area.Table Or owner.IsPlayerArea(card.GetLocation.Area) Then
                 card.SetLock(isLocked)
-                actionList.Add(New ActionData("ROTATE", owner, cardId, isLocked.ToString))
+                actionList.Add(New ActionData("LOCK", owner, cardId, isLocked.ToString))
             End If
 
             Return actionList
@@ -113,6 +115,25 @@ Namespace Domain
             End If
 
             Return actionList
+        End Function
+
+        Private Function ExecuteAggregate(game As Game, owner As PlayerData, card As Card, parameters As String()) _
+                As List(Of ActionData)
+
+            Dim actionList As New List(Of ActionData)
+            Dim cardId As String = card.Id.ToString
+            Dim deckId As Integer = CInt(parameters(1))
+            Dim deck As Deck = CType(game.GetGameObject(deckId), Deck)
+
+            If card.GetLocation.Area = Area.Table Or owner.IsPlayerArea(card.GetLocation.Area) Then
+                deck.AddCard(card.ResourceId)
+                game.RemoveGameObject(card.Id)
+                actionList.Add(New ActionData("REMOVE", owner, cardId))
+                actionList.Add(New ActionData("REORDER", owner, CStr(deck.Id), deck.getCardsString))
+            End If
+
+            Return actionList
+
         End Function
 
     End Class
