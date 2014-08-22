@@ -60,10 +60,14 @@ Namespace DataObjects
             End Set
         End Property
 
-        Public ReadOnly Property Number As Integer
+        <DataMember()>
+        Public Property Number As Integer
             Get
                 Return _number
             End Get
+            Set(value As Integer)
+                _number = value
+            End Set
         End Property
 
         Public ReadOnly Property IsHandLocked As Boolean
