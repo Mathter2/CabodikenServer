@@ -138,14 +138,20 @@ Namespace Domain
             Dim deckId As String = deck.Id.ToString
             Dim x As Integer = CType(parameters(1), Integer)
             Dim y As Integer = CType(parameters(2), Integer)
-            Dim area As Area = CType(parameters(3), Area)
+            Dim targetArea As Area = CType(parameters(3), Area)
 
-            If deck.GetLocation.Area = Area.Table Or owner.IsPlayerArea(deck.GetLocation.Area) Then
+            If (deck.GetLocation.Area = Area.Table Or owner.IsPlayerArea(deck.GetLocation.Area)) AndAlso _
+                    (targetArea = Area.Table Or owner.IsPlayerArea(targetArea)) Then
+
                 Dim newCardResourceId As Integer = deck.Draw()
                 Dim card As Card = New Card(0, newCardResourceId, deck.IsFaceDown)
-                card.IsFaceDown = deck.IsFaceDown
+                If Not targetArea = Area.Table Then
+                    card.IsFaceDown = False
+                Else
+                    card.IsFaceDown = deck.IsFaceDown
+                End If
                 card.Rotate(deck.GetRotation)
-                card.SetLocation(New Location(x, y, 0, area))
+                card.SetLocation(New Location(x, y, 0, targetArea))
                 card = CType(game.AddGameObject(card), Card)
                 actionList.Add(New ActionData("REORDER", owner, deckId, deck.getCardsString))
                 actionList.Add(New ActionData("CREATE_CARD", owner, CStr(card.Id), CStr(card.ResourceId), _

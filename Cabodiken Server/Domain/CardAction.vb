@@ -51,13 +51,13 @@ Namespace Domain
 
             Dim actionList As New List(Of ActionData)
             Dim cardId As String = card.Id.ToString
-            Dim moveArea As Area = CType(parameters(3), Area)
+            Dim targetArea As Area = CType(parameters(3), Area)
             Dim location As Location = New Location(CInt(parameters(1)), CInt(parameters(2)),
-                                                    1, moveArea)
+                                                    1, targetArea)
             Dim isFaceDown As Boolean = False
 
-            If owner.IsPlayerArea(moveArea) OrElse moveArea = Area.Table OrElse _
-                    card.GetLocation.Area = Area.Table OrElse owner.IsPlayerArea(card.GetLocation.Area) Then
+            If (owner.IsPlayerArea(targetArea) OrElse targetArea = Area.Table) AndAlso _
+                    (card.GetLocation.Area = Area.Table OrElse owner.IsPlayerArea(card.GetLocation.Area)) Then
 
                 card.SetLocation(location)
                 actionList.Add(New ActionData("REMOVE", owner, cardId))

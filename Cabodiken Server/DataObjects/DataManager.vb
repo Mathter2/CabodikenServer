@@ -303,8 +303,9 @@ Namespace DataObjects
                 If dataReader.HasRows Then
                     dataReader.Read()
                     Dim id As Integer = dataReader.GetInt32(0)
+                    Dim dbUserName As String = dataReader.GetString(1)
                     Dim message As String = GetNullableString(dataReader, 3)
-                    user = New UserData(id, username, CType(host, DataObjects.Host), message, False)
+                    user = New UserData(id, dbUserName, CType(host, DataObjects.Host), message, False)
                 End If
             Finally
                 dataReader.Close()
