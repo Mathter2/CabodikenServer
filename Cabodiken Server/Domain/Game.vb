@@ -105,6 +105,12 @@ Namespace Domain
 
         End Function
 
+        Public Function NextActionId() As Integer
+
+            Return _actions.Count
+
+        End Function
+
         Public Function GetResources() As ResourceLibrary
 
             Dim decks As List(Of ObjectData) = GetSessionObjects("DECK", _gameSession)
@@ -136,10 +142,11 @@ Namespace Domain
         Public Sub Start(owner As UserData)
 
             Dim placedDecks As List(Of Deck) = DataManager.Instance.GetPlacedDecks(_gameSession.Game.Id)
+            Dim actionId As Integer = 0
 
             For Each deck As Deck In placedDecks
 
-                Dim action As New ActionData("CREATE_DECK", owner, CStr(deck.Id), _
+                Dim action As New ActionData(actionId, "CREATE_DECK", owner, CStr(deck.Id), _
                                              CStr(deck.ResourceId), CStr(deck.GetRotation), _
                                              CStr(deck.GetLocation.GetCoordinates), CStr(0), CStr(deck.IsLocked), _
                                              CStr(deck.IsFaceDown), GetArrayString(deck.GetCards))
@@ -147,6 +154,8 @@ Namespace Domain
                 _actions.Add(action)
 
                 AddGameObject(deck)
+
+                actionId += 1
 
             Next
 

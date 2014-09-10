@@ -51,12 +51,13 @@
             End Set
         End Property
 
-        Public Sub New(name As String, owner As UserData, ParamArray parameters As String())
+        Public Sub New(index As Integer, name As String, owner As UserData, ParamArray parameters As String())
 
             If owner.GetType() = GetType(PlayerData) Then
                 owner = CType(owner, PlayerData).GetUserData()
             End If
 
+            _index = index
             _name = name
             _owner = owner
             _parameters = parameters

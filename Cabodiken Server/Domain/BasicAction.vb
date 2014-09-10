@@ -38,7 +38,7 @@ Namespace Domain
                 gameObject.GetLocation.Area = Area.Table OrElse owner.IsPlayerArea(gameObject.GetLocation.Area) Then
 
                 gameObject.SetLocation(location)
-                actionList.Add(New ActionData("REMOVE", owner, objectId))
+                'actionList.Add(New ActionData("REMOVE", owner, objectId))
 
             End If
 
@@ -53,7 +53,7 @@ Namespace Domain
 
             If gameObject.GetLocation.Area = Area.Table Or owner.IsPlayerArea(gameObject.GetLocation.Area) Then
                 gameObject.SetLocation(location)
-                actionList.Add(New ActionData("MOVE", owner, objectId, location.GetCoordinates))
+                'actionList.Add(New ActionData("MOVE", owner, objectId, location.GetCoordinates))
             End If
 
             Return actionList

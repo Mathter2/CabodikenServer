@@ -12,15 +12,15 @@ Namespace Domain
 
             Select Case action.ToUpper
                 Case "MOVE"
-                    Return ExecuteMove(owner, card, parameters)
+                    Return ExecuteMove(game, owner, card, parameters)
                 Case "AREA_MOVE"
-                    Return ExecuteAreaMove(owner, card, parameters)
+                    Return ExecuteAreaMove(game, owner, card, parameters)
                 Case "ROTATE"
-                    Return ExecuteRotate(owner, card, parameters)
+                    Return ExecuteRotate(game, owner, card, parameters)
                 Case "LOCK"
-                    Return ExecuteLock(owner, card, parameters)
+                    Return ExecuteLock(game, owner, card, parameters)
                 Case "FLIP"
-                    Return ExecuteFlip(owner, card, parameters)
+                    Return ExecuteFlip(game, owner, card, parameters)
                 Case "AGGREGATE"
                     Return ExecuteAggregate(game, owner, card, parameters)
                 Case Else
@@ -29,8 +29,8 @@ Namespace Domain
 
         End Function
 
-        Private Function ExecuteMove(owner As PlayerData, card As Card, parameters As String()) _
-    As List(Of ActionData)
+        Private Function ExecuteMove(game As Game, owner As PlayerData, card As Card, parameters As String()) _
+                As List(Of ActionData)
 
             Dim actionList As New List(Of ActionData)
             Dim cardId As String = card.Id.ToString
@@ -39,15 +39,15 @@ Namespace Domain
 
             If card.GetLocation.Area = Area.Table Or owner.IsPlayerArea(card.GetLocation.Area) Then
                 card.SetLocation(location)
-                actionList.Add(New ActionData("MOVE", owner, cardId, location.GetCoordinates))
+                actionList.Add(New ActionData(game.NextActionId, "MOVE", owner, cardId, location.GetCoordinates))
             End If
 
             Return actionList
 
         End Function
 
-        Private Function ExecuteAreaMove(owner As PlayerData, card As Card, parameters As String()) _
-            As List(Of ActionData)
+        Private Function ExecuteAreaMove(game As Game, owner As PlayerData, card As Card, parameters As String()) _
+                As List(Of ActionData)
 
             Dim actionList As New List(Of ActionData)
             Dim cardId As String = card.Id.ToString
@@ -60,9 +60,10 @@ Namespace Domain
                     (card.GetLocation.Area = Area.Table OrElse owner.IsPlayerArea(card.GetLocation.Area)) Then
 
                 card.SetLocation(location)
-                actionList.Add(New ActionData("REMOVE", owner, cardId))
-                actionList.Add(New ActionData("CREATE_CARD", owner, cardId, CStr(card.ResourceId), _
-                                              CStr(card.GetRotation), CStr(card.GetLocation.GetCoordinates), _
+                actionList.Add(New ActionData(game.NextActionId, "REMOVE", owner, cardId))
+                actionList.Add(New ActionData(game.NextActionId + 1, "CREATE_CARD", owner, cardId, _
+                                              CStr(card.ResourceId), CStr(card.GetRotation), _
+                                              CStr(card.GetLocation.GetCoordinates), _
                                               CStr(card.IsLocked), CStr(isFaceDown)))
             End If
 
@@ -70,7 +71,7 @@ Namespace Domain
 
         End Function
 
-        Private Function ExecuteRotate(owner As PlayerData, card As Card, parameters As String()) _
+        Private Function ExecuteRotate(game As Game, owner As PlayerData, card As Card, parameters As String()) _
             As List(Of ActionData)
 
             Dim actionList As New List(Of ActionData)
@@ -79,14 +80,14 @@ Namespace Domain
 
             If card.GetLocation.Area = Area.Table Or owner.IsPlayerArea(card.GetLocation.Area) Then
                 card.Rotate(rotation)
-                actionList.Add(New ActionData("ROTATE", owner, cardId, rotation.ToString))
+                actionList.Add(New ActionData(game.NextActionId, "ROTATE", owner, cardId, rotation.ToString))
             End If
 
             Return actionList
 
         End Function
 
-        Private Function ExecuteLock(owner As PlayerData, card As Card, parameters As String()) _
+        Private Function ExecuteLock(game As Game, owner As PlayerData, card As Card, parameters As String()) _
                 As List(Of ActionData)
 
             Dim actionList As New List(Of ActionData)
@@ -95,14 +96,14 @@ Namespace Domain
 
             If card.GetLocation.Area = Area.Table Or owner.IsPlayerArea(card.GetLocation.Area) Then
                 card.SetLock(isLocked)
-                actionList.Add(New ActionData("LOCK", owner, cardId, isLocked.ToString))
+                actionList.Add(New ActionData(game.NextActionId, "LOCK", owner, cardId, isLocked.ToString))
             End If
 
             Return actionList
 
         End Function
 
-        Private Function ExecuteFlip(owner As PlayerData, card As Card, parameters As String()) _
+        Private Function ExecuteFlip(game As Game, owner As PlayerData, card As Card, parameters As String()) _
                 As List(Of ActionData)
 
             Dim actionList As New List(Of ActionData)
@@ -111,7 +112,7 @@ Namespace Domain
 
             If card.GetLocation.Area = Area.Table Or owner.IsPlayerArea(card.GetLocation.Area) Then
                 card.IsFaceDown = isFaceDown
-                actionList.Add(New ActionData("FLIP", owner, cardId, card.IsFaceDown.ToString))
+                actionList.Add(New ActionData(game.NextActionId, "FLIP", owner, cardId, card.IsFaceDown.ToString))
             End If
 
             Return actionList
@@ -128,8 +129,9 @@ Namespace Domain
             If card.GetLocation.Area = Area.Table Or owner.IsPlayerArea(card.GetLocation.Area) Then
                 deck.AddCard(card.ResourceId)
                 game.RemoveGameObject(card.Id)
-                actionList.Add(New ActionData("REMOVE", owner, cardId))
-                actionList.Add(New ActionData("REORDER", owner, CStr(deck.Id), deck.getCardsString))
+                actionList.Add(New ActionData(game.NextActionId, "REMOVE", owner, cardId))
+                actionList.Add(New ActionData(game.NextActionId + 1, "REORDER", owner, CStr(deck.Id), _
+                                              deck.getCardsString))
             End If
 
             Return actionList

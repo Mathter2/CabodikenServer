@@ -12,19 +12,19 @@ Namespace Domain
 
             Select Case action.ToUpper
                 Case "MOVE"
-                    Return ExecuteMove(owner, deck, parameters)
+                    Return ExecuteMove(game, owner, deck, parameters)
                 Case "AREA_MOVE"
-                    Return ExecuteAreaMove(owner, deck, parameters)
+                    Return ExecuteAreaMove(game, owner, deck, parameters)
                 Case "ROTATE"
-                    Return ExecuteRotate(owner, deck, parameters)
+                    Return ExecuteRotate(game, owner, deck, parameters)
                 Case "LOCK"
-                    Return ExecuteLock(owner, deck, parameters)
+                    Return ExecuteLock(game, owner, deck, parameters)
                 Case "FLIP"
-                    Return ExecuteFlip(owner, deck, parameters)
+                    Return ExecuteFlip(game, owner, deck, parameters)
                 Case "AGGREGATE"
                     Return Nothing 'Placeholder for aggregate function
                 Case "SHUFFLE"
-                    Return ExecuteShuffle(owner, deck, parameters)
+                    Return ExecuteShuffle(game, owner, deck, parameters)
                 Case "DRAW"
                     Return ExecuteDraw(game, owner, deck, parameters)
                 Case Else
@@ -33,7 +33,7 @@ Namespace Domain
 
         End Function
 
-        Private Function ExecuteAreaMove(owner As PlayerData, deck As Deck, parameters As String()) _
+        Private Function ExecuteAreaMove(game As Game, owner As PlayerData, deck As Deck, parameters As String()) _
             As List(Of ActionData)
 
             Dim actionList As New List(Of ActionData)
@@ -55,7 +55,7 @@ Namespace Domain
 
         End Function
 
-        Private Function ExecuteMove(owner As PlayerData, deck As Deck, parameters As String()) _
+        Private Function ExecuteMove(game As Game, owner As PlayerData, deck As Deck, parameters As String()) _
             As List(Of ActionData)
 
             Dim actionList As New List(Of ActionData)
@@ -65,14 +65,14 @@ Namespace Domain
 
             If deck.GetLocation.Area = Area.Table Or owner.IsPlayerArea(deck.GetLocation.Area) Then
                 deck.SetLocation(location)
-                actionList.Add(New ActionData("MOVE", owner, deckId, location.GetCoordinates))
+                actionList.Add(New ActionData(game.NextActionId, "MOVE", owner, deckId, location.GetCoordinates))
             End If
 
             Return actionList
 
         End Function
 
-        Private Function ExecuteRotate(owner As PlayerData, deck As Deck, parameters As String()) _
+        Private Function ExecuteRotate(game As Game, owner As PlayerData, deck As Deck, parameters As String()) _
             As List(Of ActionData)
 
             Dim actionList As New List(Of ActionData)
@@ -88,7 +88,7 @@ Namespace Domain
 
         End Function
 
-        Private Function ExecuteLock(owner As PlayerData, deck As Deck, parameters As String()) _
+        Private Function ExecuteLock(game As Game, owner As PlayerData, deck As Deck, parameters As String()) _
                                     As List(Of ActionData)
 
             Dim actionList As New List(Of ActionData)
@@ -97,27 +97,27 @@ Namespace Domain
 
             If deck.GetLocation.Area = Area.Table Or owner.IsPlayerArea(deck.GetLocation.Area) Then
                 deck.SetLock(isLocked)
-                actionList.Add(New ActionData("LOCK", owner, deckId, isLocked.ToString))
+                actionList.Add(New ActionData(game.NextActionId, "LOCK", owner, deckId, isLocked.ToString))
             End If
 
             Return actionList
 
         End Function
 
-        Private Function ExecuteShuffle(owner As PlayerData, deck As Deck, parameters As String()) _
+        Private Function ExecuteShuffle(game As Game, owner As PlayerData, deck As Deck, parameters As String()) _
                                         As List(Of ActionData)
 
             Dim actionList As New List(Of ActionData)
             Dim deckId As String = deck.Id.ToString
             If deck.GetLocation.Area = Area.Table Or owner.IsPlayerArea(deck.GetLocation.Area) Then
                 deck.Shuffle(0)
-                actionList.Add(New ActionData("REORDER", owner, deckId, deck.getCardsString))
+                actionList.Add(New ActionData(game.NextActionId, "REORDER", owner, deckId, deck.getCardsString))
             End If
             Return actionList
 
         End Function
 
-        Private Function ExecuteFlip(owner As PlayerData, deck As Deck, parameters As String()) _
+        Private Function ExecuteFlip(game As Game, owner As PlayerData, deck As Deck, parameters As String()) _
                                      As List(Of ActionData)
 
             Dim actionList As New List(Of ActionData)
@@ -125,7 +125,7 @@ Namespace Domain
             Dim isFaceDown As Boolean = CType(parameters(1), Boolean)
             If deck.GetLocation.Area = Area.Table Or owner.IsPlayerArea(deck.GetLocation.Area) Then
                 deck.IsFaceDown = isFaceDown
-                actionList.Add(New ActionData("FLIP", owner, deckId, deck.IsFaceDown.ToString))
+                actionList.Add(New ActionData(game.NextActionId, "FLIP", owner, deckId, deck.IsFaceDown.ToString))
             End If
             Return actionList
 
@@ -153,9 +153,10 @@ Namespace Domain
                 card.Rotate(deck.GetRotation)
                 card.SetLocation(New Location(x, y, 0, targetArea))
                 card = CType(game.AddGameObject(card), Card)
-                actionList.Add(New ActionData("REORDER", owner, deckId, deck.getCardsString))
-                actionList.Add(New ActionData("CREATE_CARD", owner, CStr(card.Id), CStr(card.ResourceId), _
-                                              CStr(card.GetRotation), CStr(card.GetLocation.GetCoordinates), _
+                actionList.Add(New ActionData(game.NextActionId, "REORDER", owner, deckId, deck.getCardsString))
+                actionList.Add(New ActionData(game.NextActionId + 1, "CREATE_CARD", owner, CStr(card.Id), _
+                                              CStr(card.ResourceId), CStr(card.GetRotation), _
+                                              CStr(card.GetLocation.GetCoordinates), _
                                               CStr(card.IsLocked), CStr(card.IsFaceDown)))
             End If
 
